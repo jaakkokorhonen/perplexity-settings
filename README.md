@@ -123,6 +123,10 @@ This setup is useful for users who want:
 - No giving feedback on the users questions.
 - No attempts from the LLM to appear to be able to give expert judgement on implications or normative conclusions on matters.
 
+## Cognitive Fallacies
+
+If your LLM still can't plough through the misinformation, try asking it to clean away cognitive fallacies with the cognitive_fallacies.csv attached.
+
 ## License
 
 Use and adapt freely while attributing in a reasonable manner.
