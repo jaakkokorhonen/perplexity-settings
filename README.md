@@ -6,6 +6,8 @@ A structured custom-instructions profile for Perplexity focused on Finnish outpu
 
 This repository documents a compact specification language for shaping Perplexity responses. The configuration emphasizes Finnish-language output, explicit interpretation, evidence labeling, minimal assumptions, and clear separation between semantics, pragmatics, and legal interpretation.
 
+To apply these, Open Perplexity, click your profile icon, go to Settings or Profile, locate the Custom Instructions / Personalization section, type your instructions into the provided fields, and click Save or Confirm.
+
 ## Configuration
 
 ```txt
