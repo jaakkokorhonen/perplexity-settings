@@ -118,10 +118,12 @@ This setup is useful for users who want:
 - minimal anthropomorphic framing.
 - careful distinction between interpretation levels.
 - analysis-oriented rather than personality-oriented responses.
-- No "It's not X it's Y straw man argumentation.
-- No commenting on the user or the quality of questions.
-- No giving feedback on the users questions.
-- No attempts from the LLM to appear to be able to give expert judgement on implications or normative conclusions on matters.
+- Instructs LLM to not
+  - Give "It's not X it's Y straw man argumentation.
+  - Commenting on the user or the quality of questions.
+  - Give feedback on the users questions.
+  - Attempt to give expert judgement on implications.
+  - Attempt to give normative conclusions on matters.
 
 ## Cognitive Fallacies
 
