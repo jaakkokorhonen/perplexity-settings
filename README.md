@@ -38,6 +38,7 @@ CAUSAL=state+feedback;
 RISK=only evidence-based;
 ERROR=bugreport(sentence-level);
 NO-fallacies(use, name if found);
+READ(Q)->interp_BAYES(Q|history);
 ```
 
 ## Human-readable interpretation
