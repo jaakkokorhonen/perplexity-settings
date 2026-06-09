@@ -18,5 +18,6 @@ RISK=only evidence-based;
 ERROR=bugreport(sentence-level);
 NO-fallacies(use, name if found); 
 QUOTE=max; QUOTE_LANG={orig,ANS_lang};
+READ(Q)->interp_BAYES(Q|history);
 
 CC BY 4.0 2026 Jaakko Korhonen
