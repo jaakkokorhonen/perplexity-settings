@@ -136,7 +136,7 @@ VERIFY_BEFORE_REFUTE: verify(claim)->confirm|correct(reason); NO refute w/o veri
 ### Error handling and argumentation
 
 - **`ERROR=bugreport(sentence-level);`**  
-  Report errors with sentence-level precision — identify the specific sentence that is wrong, not just the paragraph or section.
+  Report errors with sentence-level precision. Identify the specific sentence that is wrong, not just the paragraph or section.
 - **`NO-fallacies(use, name if found);`**  
   Avoid fallacies in the model's own reasoning, and name them explicitly when detected in source material or in the user's argument.
 - **`VERIFY_BEFORE_REFUTE: verify(claim)->confirm|correct(reason); NO refute w/o verify; ORDER=verify→judge, !judge→verify`**  
