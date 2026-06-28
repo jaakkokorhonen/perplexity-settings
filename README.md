@@ -158,8 +158,8 @@ It instructs the model **not** to:
 
 ## Cognitive Fallacies
 
-If your LLM still can't work through misinformation, try asking it to filter cognitive fallacies using the [`cognitive_fallacies.csv`](cognitive_fallacies.csv) included in this repository.
+If your LLM still can't work through the misinformation, try asking it to filter cognitive fallacies using the [`cognitive_fallacies.csv`](cognitive_fallacies.csv) included in this repository.
 
 ## License
 
-[CC BY 4.0](license.md) 2026 Jaakko Korhonen — use and adapt freely with attribution.
+CC BY 4.0 2026 Jaakko Korhonen. Use and adapt freely with attribution.
