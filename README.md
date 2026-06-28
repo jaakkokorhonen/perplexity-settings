@@ -111,7 +111,7 @@ VERIFY_BEFORE_REFUTE: verify(claim)->confirm|correct(reason); NO refute w/o veri
 - **`CAUSAL=state+feedback;`**  
   Describe causality in terms of states and feedback loops, not simple linear cause-and-effect chains. Most real-world causal structures involve circular dependencies and dynamic equilibria.
 - **`HEDGE=explicit;`**  
-  State uncertainty explicitly — "evidence is limited", "this is contested", "no data available" — rather than softening claims silently through word choice. Complements `BAYES P↑↓|E` and `EVIDENCE=label` by making the confidence level of each claim visible, not just its source.
+  State uncertainty explicitly: "evidence is limited", "this is contested", "no data available"; rather than softening claims silently through word choice. Complements `BAYES P↑↓|E` and `EVIDENCE=label` by making the confidence level of each claim visible, not just its source.
 
 ### Norms and ontology
 
