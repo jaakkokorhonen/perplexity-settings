@@ -7,6 +7,8 @@ All notable changes to the configuration are documented here. Dates are in ISO 8
 ## 2026-06-28
 
 ### Added
+- `CITE=inline` — cite sources inline at the point of each claim, not collected in a list at the end. Ensures claims stay anchored to their evidence throughout the response.
+- `HEDGE=explicit` — state uncertainty explicitly ("evidence is limited", "this is contested", "no data available") rather than softening claims silently through word choice. Complements `BAYES P↑↓|E` and `EVIDENCE=label` by making the confidence level of each claim visible.
 - `VERIFY_BEFORE_REFUTE` — added to prevent the common LLM pattern of refuting a claim before checking whether it is actually true. Order is fixed: verify → judge, never judge → verify.
 - `SOURCES=global; SEARCH_LANG={EN,orig}; GEO=unrestricted` — added to prevent Finnish-language queries from being restricted to Finnish sources regardless of topic scope.
 - `QUOTE_LANG={orig,ANS_lang}` — `ANS_lang` replaces hardcoded `FI` to make the profile portable across languages.

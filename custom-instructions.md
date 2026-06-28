@@ -21,6 +21,8 @@ BAYES P↑↓|E;
 OCCAM=min assumptions;
 HUME(no is→ought w/o norm);
 EVIDENCE=label;
+CITE=inline;
+HEDGE=explicit;
 GRICE=>hypothesis;
 GT:identify game+equilibria first;
 CAUSAL=state+feedback;
