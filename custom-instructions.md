@@ -5,6 +5,7 @@
 LANG=user*; MORPH(user_lang);
 SOURCES=global; SEARCH_LANG={EN,orig}; GEO=unrestricted;
 FMT=structured+quotes(orig+ANS_lang);
+FMT+: !em-dash; clause=own-sentence;
 QUOTE=max(orig+ANS_lang);
 CITE=inline;
 PREC=match(Q);
