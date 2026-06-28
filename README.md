@@ -1,3 +1,5 @@
+Structured custom-instructions profile for Perplexity — Finnish output, evidence discipline, VERIFY_BEFORE_REFUTE, and global source coverage. To apply, open Perplexity and go to [Custom Instructions settings](https://www.perplexity.ai/help-center/en/articles/10352993-account-settings).
+
 This is a Perplexity custom instructions profile focused on Finnish output, explicit reasoning, evidence discipline, and careful interpretation. The configuration aims to encourage Perplexity to give user actionable, factual data. Feel free to use and propose your improvements.
 
 ## Overview

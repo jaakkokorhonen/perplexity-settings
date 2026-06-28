@@ -1,8 +1,4 @@
 title: Perplexity Settings
-description: >-
-  Structured custom-instructions profile for Perplexity —
-  Finnish output, evidence discipline, VERIFY_BEFORE_REFUTE,
-  and global source coverage.
 theme: jekyll-theme-minimal
 author: Jaakko Korhonen
 
