@@ -6,7 +6,3 @@ baseurl: "/perplexity-settings"
 
 plugins:
   - jekyll-sitemap
-
-# Exclude source-only files from the Pages build
-exclude:
-  - cognitive_fallacies.csv
