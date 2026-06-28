@@ -1,6 +1,6 @@
-# Perplexity Settings
+Perplexity [Custom instructions settings](https://www.perplexity.ai/help-center/en/articles/10352993-account-settings) to clean up argumentative rhetoric and hallucinations.
 
-This is a Perplexity custom instructions profile focused on Finnish output, explicit reasoning, evidence discipline, and careful interpretation. The configuration aims to encourage Perplexity to give user actionable,factual data. Feel free to use and propose your improvements. 
+This is a Perplexity custom instructions profile focused on Finnish output, explicit reasoning, evidence discipline, and careful interpretation. The configuration aims to encourage Perplexity to give user actionable, factual data. Feel free to use and propose your improvements.
 
 ## Overview
 
@@ -159,6 +159,8 @@ It instructs the model **not** to:
 ## Cognitive Fallacies
 
 If your LLM still can't work through misinformation, try asking it to filter cognitive fallacies using the [`cognitive_fallacies.csv`](cognitive_fallacies.csv) included in this repository.
+
+The CSV contains a structured list of named cognitive fallacies. To use it, attach the CSV content into the prompt, and instruct the model to avoid the attached fallacies. 
 
 ## License
 
