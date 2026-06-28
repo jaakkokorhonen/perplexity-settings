@@ -1,6 +1,6 @@
 title: Perplexity Settings
 description: >-
-  This is a Perplexity custom instructions profile focused on Finnish output, explicit reasoning, evidence discipline, and careful interpretation. The configuration aims to encourage Perplexity to give user actionable,factual data. Feel free to use and propose your improvements.
+  Perplexity Custom instructions to clean up argumentative rhetoric and hallucinations. 
 theme: jekyll-theme-minimal
 author: Jaakko Korhonen
 
