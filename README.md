@@ -1,6 +1,6 @@
 Perplexity [Custom instructions settings](https://www.perplexity.ai/help-center/en/articles/10352993-account-settings) to clean up argumentative rhetoric and hallucinations.
 
-This is a Perplexity Custom instructions profile focused on Finnish output, explicit reasoning, evidence discipline, and careful interpretation. The configuration aims to encourage Perplexity to give user actionable, factual data. Feel free to use and propose your improvements.
+This is a Perplexity custom instructions profile focused on Finnish output, explicit reasoning, evidence discipline, and careful interpretation. The configuration aims to encourage Perplexity to give user actionable, factual data. Feel free to use and propose your improvements.
 
 ## Overview
 
