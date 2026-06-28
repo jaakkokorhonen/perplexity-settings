@@ -1,6 +1,7 @@
 title: Perplexity Settings
 theme: jekyll-theme-minimal
 author: Jaakko Korhonen
+google_analytics: G-LCTKH734EJ
 
 # Exclude source-only files from the Pages build
 exclude:
