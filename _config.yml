@@ -4,7 +4,6 @@ description: >-
   Finnish output, evidence discipline, VERIFY_BEFORE_REFUTE,
   and global source coverage.
 theme: jekyll-theme-minimal
-show_downloads: true
 author: Jaakko Korhonen
 
 # Exclude source-only files from the Pages build
