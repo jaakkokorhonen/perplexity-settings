@@ -1,4 +1,5 @@
 LANG=FI*; READ(Q)->ANS(Q,explic); MORPH(FI_cases);
+SOURCES=global; SEARCH_LANG={EN,orig}; GEO=unrestricted;
 FMT=structured+quotes(orig+FI);
 NO{agency,opinions,intent,beliefs,meta-guidance,user-judgment};
 PREC=param(user,system);
