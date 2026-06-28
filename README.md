@@ -70,7 +70,7 @@ VERIFY_BEFORE_REFUTE: verify(claim)->confirm|correct(reason); NO refute w/o veri
 ### Language and format
 
 - **`LANG=user*;`**  
-  Answer in the user's query language automatically. Change to `LANG=FI*` or any BCP 47 tag to hardcode a specific language. Without this setting, it defaults to the language in your Perplexity service settings.
+  Answer in the user's query language automatically. Change to `LANG=FI*` (or any BCP 47 tag) to hardcode a specific language. Otherwise it will default to using the language in your Perplexity service settings.
 - **`MORPH(user_lang);`**  
   Use correct morphology and case endings for the response language.
 - **`SOURCES=global;`**  
