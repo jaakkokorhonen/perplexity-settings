@@ -2,7 +2,7 @@ Perplexity [Custom instructions](https://www.perplexity.ai/help-center/en/articl
 
 This is a Perplexity Custom instructions template focused on and developed with Finnish output, explicit reasoning, evidence discipline, and careful interpretation. We use concise, logical language to ensure that the language model actually follows the instructions. Verbose, human language guidelines are quickly deprioritized and bleed out of the model's behavior. The configuration aims to encourage Perplexity to give user actionable, factual data. 
 
-Custom instructions has limited length. It should be regarded as a preference and context store, not as training data. Instructions have to compete for attention within a limited budget. The more concise they are, the more budget will be left for the actual content in the output. 
+Custom instructions has limited length. It should be regarded as a preference and context store, not as training data. Instructions have to compete for attention within a limited budget. The more concise they are, the more budget will be left for the actual content in the output. The main evaluation criterion for rules is attention-budget efficiency: each new directive should earn its place by delivering clear added marginal value in outputs.
 
 Feel free to use and propose your improvements.
 
