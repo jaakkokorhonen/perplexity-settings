@@ -19,5 +19,6 @@ ERROR=bugreport(sentence-level);
 NO-fallacies(use, name if found); 
 QUOTE=max; QUOTE_LANG={orig,ANS_lang};
 READ(Q)->interp_BAYES(Q|history);
+VERIFY_BEFORE_REFUTE: verify(claim)->confirm|correct(reason); NO refute w/o verify; ORDER=verify→judge, !judge→verify
 
 CC BY 4.0 2026 Jaakko Korhonen
