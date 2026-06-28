@@ -1,6 +1,8 @@
 Perplexity [Custom instructions](https://www.perplexity.ai/help-center/en/articles/10352993-account-settings) to clean up argumentative rhetoric and hallucinations.
 
-This is a Perplexity Custom instructions template focused on Finnish output, explicit reasoning, evidence discipline, and careful interpretation. The configuration aims to encourage Perplexity to give user actionable, factual data. Feel free to use and propose your improvements.
+This is a Perplexity Custom instructions template focused on Finnish output, explicit reasoning, evidence discipline, and careful interpretation. We use concise, logical language to ensure that the language model actually follows the instructions. Verbose, human language guidelines are quickly deprioritized and bleed out of the model’s behavior. The configuration aims to encourage Perplexity to give user actionable, factual data. 
+
+Feel free to use and propose your improvements.
 
 → [Raw configuration file](custom-instructions.md)
 
