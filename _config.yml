@@ -3,8 +3,7 @@ description: >-
   Structured custom-instructions profile for Perplexity —
   Finnish output, evidence discipline, VERIFY_BEFORE_REFUTE,
   and global source coverage.
-theme: jekyll-theme-cayman
-show_downloads: true
+theme: jekyll-theme-minimal
 author: Jaakko Korhonen
 
 # Exclude source-only files from the Pages build
