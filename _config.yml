@@ -1,11 +1,11 @@
 title: Perplexity Settings
 description: >-
-  Perplexity 'Custom instructions <a href="https://www.perplexity.ai/help-center/en/articles/10352993-account-settings">Docs</a>' to clean up argumentative rhetoric and hallucinations. 
+  Structured custom-instructions profile for Perplexity —
+  Finnish output, evidence discipline, VERIFY_BEFORE_REFUTE,
+  and global source coverage.
 theme: jekyll-theme-minimal
 author: Jaakko Korhonen
 
 # Exclude source-only files from the Pages build
 exclude:
   - cognitive_fallacies.csv
-
-'Structured profile for Perplexity. <a href="https://example.com">Docs</a>' 
