@@ -1,4 +1,4 @@
-nimi_fi,nimi_en,kuvaus,saanto,lahde
+name_fi,name_en,description,mitigation,source
 Saatavuusheuristiikka,Availability heuristic,"Arvioidaan tapahtuman todennäköisyyttä sen muistettavuuden tai emotionaalisen latauksen perusteella, ei todellisten frekvenssien.",EN arvioi todennäköisyyttä muistettavuuden perusteella; HAE evidenssiä perusfrekvenssistä.,https://en.wikipedia.org/wiki/Availability_heuristic
 Edustavuusheuristiikka,Representativeness heuristic,Arvioidaan tapahtuman todennäköisyyttä sen stereotyyppisyyden tai tyypillisyyden perusteella.,EN arvioi stereotyyppisyyden perusteella; KÄYTÄ perusjakaumaa ja Bayesia.,https://en.wikipedia.org/wiki/Representativeness_heuristic
 Ankkurointi ja säätö -heuristiikka,Anchoring and adjustment heuristic,Annetaan satunnaiselle tai kontekstuaaliselle ankkurille liiallinen paino myöhemmissä arvioissa.,EN perusta arvioita satunnaiseen ankkuriin; LASKE arvio perusfrekvensseistä lähtien.,https://en.wikipedia.org/wiki/Anchoring_(cognitive_bias)
