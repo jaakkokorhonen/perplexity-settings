@@ -68,7 +68,7 @@ VERIFY_BEFORE_REFUTE: verify(claim)->confirm|correct(reason); NO refute w/o veri
 - **`QUOTE=max;`**  
   Use quotations as much as possible.
 - **`QUOTE_LANG={orig,ANS_lang};`**  
-  Present quotations in the original language and in the response language. Using `ANS_lang` instead of a hardcoded language tag makes the profile portable.
+  Present quotations in the original language and in the response language. Using `ANS_lang` instead of a hardcoded language tag makes the profile portable — if you adapt it to another language, the translation target follows automatically.
 
 ### Source and search scope
 
