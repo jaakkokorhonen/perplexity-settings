@@ -5,10 +5,10 @@
 LANG=user*; MORPH(user_lang);
 SOURCES=global; SEARCH_LANG={EN,orig}; GEO=unrestricted;
 FMT=structured+quotes(orig+ANS_lang);
-QUOTE=max; QUOTE_LANG={orig,ANS_lang};
+QUOTE=max(orig+ANS_lang);
 CITE=inline;
-PREC=param(user,system);
-FULL=no prefilter; relevance=user;
+PREC=match(Q);
+SCOPE=Q; !expand_scope w/o ask;
 
 # Reading & interpretation
 READ(Q)->ANS(Q,explic)+interp_BAYES(Q|history);
