@@ -160,13 +160,7 @@ It instructs the model **not** to:
 
 If your LLM still can't work through misinformation, try asking it to filter cognitive fallacies using the [`cognitive_fallacies.csv`](cognitive_fallacies.csv) included in this repository.
 
-The CSV contains a structured list of named cognitive fallacies. To use it, paste the CSV content (or a relevant subset) into the system prompt or a user message, and instruct the model to identify and name any fallacies present in the text being analyzed. The list covers both formal fallacies (e.g. affirming the consequent) and informal ones (e.g. ad hominem, false dichotomy, appeal to authority).
-
-**Example prompt addition:**
-```
-Using the attached cognitive_fallacies.csv, identify and name any fallacies present in the following text:
-[paste text here]
-```
+The CSV contains a structured list of named cognitive fallacies. To use it, attach the CSV content into the prompt, and instruct the model to avoid the attached fallacies. 
 
 ## License
 
