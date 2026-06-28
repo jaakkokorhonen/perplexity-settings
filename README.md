@@ -1,12 +1,6 @@
----
-title: Perplexity Settings
-description: Structured custom-instructions profile for Perplexity — Finnish output, evidence discipline, and careful interpretation.
-layout: default
----
-
 # Perplexity Settings
 
-A structured custom-instructions profile for Perplexity focused on Finnish output, explicit reasoning, evidence discipline, and careful interpretation.
+This is a Perplexity custom instructions profile focused on Finnish output, explicit reasoning, evidence discipline, and careful interpretation. The configuration aims to encourage Perplexity to give user actionable,factual data. Feel free to use and propose your improvements. 
 
 ## Overview
 
