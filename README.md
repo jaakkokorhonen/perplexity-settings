@@ -81,7 +81,7 @@ VERIFY_BEFORE_REFUTE: verify(claim)->confirm|correct(reason); NO refute w/o veri
 - **`FMT=structured+quotes(orig+ANS_lang);`**  
   Format the answer clearly and structurally. Present quotations in the original language and in the response language.
 - **`QUOTE=max(orig+ANS_lang);`**  
-  Use quotations as much as possible. Present each quotation both in the original language and in the response language. The `ANS_lang` token is portable — if you adapt the profile to another language, the translation target follows automatically without editing this rule.
+  Use quotations as much as possible. Present each quotation both in the original language and in the response language. The `ANS_lang` token is portable — if you change the profile settings to another language, the translation target follows automatically without editing this rule.
 - **`CITE=inline;`**  
   Cite sources inline at the point of each claim, not collected in a list at the end.
 - **`PREC=match(Q);`**  
