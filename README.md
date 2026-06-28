@@ -6,13 +6,13 @@ Custom instructions has limited length. It should be regarded as a preference an
 
 Feel free to use and propose your improvements.
 
-> [Raw configuration file](custom-instructions.md)
+→ [Raw configuration file](custom-instructions.md)
 
 ## Overview
 
 This repository documents a compact specification language for shaping Perplexity responses. The configuration emphasizes language-adaptive output, explicit interpretation, evidence labeling, minimal assumptions, and clear separation between semantics, pragmatics, and legal interpretation.
 
-To apply these, open Perplexity, click your profile icon, go to **Settings > Profile**, locate the **Custom Instructions / Personalization** section, paste your instructions into the provided fields, and click **Save**.
+To apply these, open Perplexity, click your profile icon, go to **Settings → Profile**, locate the **Custom Instructions / Personalization** section, paste your instructions into the provided fields, and click **Save**.
 
 ## Configuration
 
