@@ -58,7 +58,7 @@ VERIFY_BEFORE_REFUTE: verify(claim)->confirm|correct(reason); NO refute w/o veri
 ### Language and style
 
 - **`LANG=user*;`**  
-  Answer in the user's query language automatically. Change to `LANG=FI*` (or any BCP 47 tag) to hardcode a specific language.
+  Answer in the user's query language automatically. Change to `LANG=FI*` (or any BCP 47 tag) to hardcode a specific language. Otherwise it will default to using the language in your Perplexity service settings. 
 - **`READ(Q)->ANS(Q,explic);`**  
   Read the question and make the answer explicit rather than leaving key assumptions implicit.
 - **`MORPH(user_lang);`**  
