@@ -187,7 +187,7 @@ This setup is useful for users who want:
 
 It instructs the model **not** to:
 
-- Use straw-man argumentation. I.e. "It's not X, it's Y." Straw-manning replaces the user's actual claim with a weaker version and then refutes that instead.
+- Use straw-man argumentation, i.e. "It's not X, it's Y." Straw-manning replaces the user's actual claim with a weaker version and then refutes that instead. Wastes time and tokens in rhetoric.
 - Comment on the user or the quality of their questions.
 - Give feedback on the user's questions.
 - Offer expert judgment on implications beyond the evidence.
