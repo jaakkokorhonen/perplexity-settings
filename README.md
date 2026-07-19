@@ -10,6 +10,29 @@ Feel free to use and propose your improvements.
 
 → [Raw configuration file](custom-instructions.md)
 
+## Repository structure
+
+This repository contains three distinct types of artifacts with different roles:
+
+- **`custom-instructions.md`** — machine-readable source of truth for the prompt configuration. Optimized for attention-budget efficiency, not human readability. Do not edit for cosmetic or readability reasons.
+- **`README.md`** — human-readable explanation of the configuration. May expand on, reorder, or omit details that are implicit in `custom-instructions.md`. Not a 1:1 mirror.
+- **`cognitive_fallacies.csv`** — standalone dataset of cognitive fallacies. An independent artifact; its contents are not required to match the Cognitive Fallacies section in this README line-for-line.
+
+See [CONVENTIONS.md](CONVENTIONS.md) for the synchronization rules between these files.
+
+## Table of contents
+
+- [How to use](#how-to-use)
+- [Human-readable interpretation](#human-readable-interpretation)
+- [Performance engineering: why rules are ordered this way](#performance-engineering-why-rules-are-ordered-this-way)
+- [Test hypotheses and test questions](#test-hypotheses-and-test-questions)
+- [Burden of proof: theoretical foundations](#burden-of-proof-theoretical-foundations)
+- [Theoretical foundations](#theoretical-foundations)
+- [One-paragraph prompt version](#one-paragraph-prompt-version)
+- [Purpose](#purpose)
+- [Cognitive Fallacies](#cognitive-fallacies)
+- [License](#license)
+
 ## How to use
 
 To apply these, open Perplexity, click your profile icon, go to **Settings → Personalization → Custom instructions**, and paste the content.
