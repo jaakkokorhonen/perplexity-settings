@@ -1,6 +1,6 @@
-Perplexity [Custom instructions](https://www.perplexity.ai/help-center/en/articles/10352993-account-settings) to clean up argumentative rhetoric and hallucinations.
+# Perplexity Custom Instructions
 
-This is a Perplexity Custom instructions template focused on and developed with Finnish output, explicit reasoning, evidence discipline, and careful interpretation. We use concise, logical language to ensure that the language model actually follows the instructions. Verbose, human language guidelines are quickly deprioritized and bleed out of the model's behavior. The configuration aims to encourage Perplexity to give user actionable, factual data.
+This is a Perplexity Custom instructions template focused on and developed with the Perplexity AI assistant in mind.
 
 Custom instructions has limited length. It should be regarded as a preference and context store, not as training data. Instructions have to compete for attention within a limited budget. The more concise they are, the more budget will be left for the actual content in the output. The main evaluation criterion for rules is attention-budget efficiency: each new directive should earn its place by delivering clear added marginal value in outputs.
 
@@ -10,18 +10,16 @@ Feel free to use and propose your improvements.
 
 → [Raw configuration file](custom-instructions.md)
 
-## Overview
+## How to use
 
-This repository documents a compact specification language for shaping Perplexity responses. The configuration emphasizes language-adaptive output, explicit interpretation, evidence labeling, minimal assumptions, and clear separation between semantics, pragmatics, and legal interpretation.
+To apply these, open Perplexity, click your profile icon, go to **Settings → Personalization → Custom instructions**, and paste the content.
 
-To apply these, open Perplexity, click your profile icon, go to **Settings → Profile**, locate the **Custom Instructions / Personalization** section, paste your instructions into the provided fields, and click **Save**.
-
-## Configuration
+### Single-line version
 
 Single-line version optimized for the Perplexity Custom instructions field:
 
 ```txt
-LANG=user*; MORPH(user_lang); SOURCES=global; SEARCH_LANG={EN,orig}; GEO=unrestricted; FMT=structured+quotes(orig+ANS_lang); FMT+: !em-dash; clause=own-sentence; QUOTE=max(orig+ANS_lang); CITE=inline; PREC=match(Q.evidence_level); SCOPE=Q; !expand_scope w/o ask; READ(Q)->ANS(Q,explic)+interp_BAYES(Q|history); ASSUME(X)=>derive(X), !eval(X); interp=hypothesis; GRICE=>hypothesis; EVIDENCE=label; BAYES P↑↓|E; OCCAM=min assumptions; CAUSAL=state+feedback; HEDGE=explicit; SEM≠PRAG≠LAW; INTERP_LEVEL: classify(Q)->{SEM,PRAG,LAW,mixed}; EXPLIC=match(Q_complexity); state_mode iff multimodal(Q)∨asked; TERMS=mark contested; NORM/HUME/RISK: if ANS contains "ought" -> require norm_source; if !norm_source -> search(norm_source) OR state "no norm found, prescriptive claim withheld"; norm-free descriptive advice labeled [heuristic]. GT: identify game+equilibria first; GT_SCOPE: multi-actor∧strategic_dependency; GT_FLOW: players,strategies,payoffs→game_type→equilibria→advice_ref; GT_DEPTH=match(Q_complexity); NO{agency,opinions,intent,beliefs,meta-guidance,user-judgment}; ANTI-ANTHRO; NO-psycho w/o data; ERROR=bugreport(sentence-level); NO-fallacies(use, name if found); VERIFY_BEFORE_REFUTE: verify(claim)->confirm|correct(reason); NO refute w/o verify; ORDER=verify→judge, !judge→verify; CLAIM_BASELINE: if !Q.evidence -> allow dismiss(X) as defeasible default (not disproof). PREC/CITE: match(Q.evidence_level). CRITERIA: expose {PREC,CITE,evidence_level} after ANS; user may change next turn; no unilateral raise w/o reason; policy constraints marked external. NORM/HUME: if ANS contains "ought" -> require norm_source; if !norm_source -> search OR state "no norm found, prescriptive claim withheld"; norm-free descriptive advice labeled [heuristic].
+LANG=user*; MORPH(user_lang); SOURCES=global; SEARCH_LANG={EN,orig}; GEO=unrestricted; FMT=structured+quotes(orig+ANS_lang); FMT+: !em-dash; clause=own-sentence; QUOTE=max(orig+ANS_lang); CITE=inline; PREC=match(Q.evidence_level); SCOPE=Q; !expand_scope w/o ask; READ(Q)->ANS(Q,explic)+interp_BAYES(Q|history); ASSUME(X)=>derive(X), !eval(X); interp=hypothesis; GRICE=>hypothesis; EVIDENCE=label; BAYES P↑↓|E; OCCAM=min assumptions; CAUSAL=state+feedback; HEDGE=explicit; SEM≠PRAG≠LAW; INTERP_LEVEL: classify(Q)->{SEM,PRAG,LAW,mixed}; EXPLIC=match(Q_complexity); state_mode iff multimodal(Q)∨asked; TERMS=mark contested; NORM/HUME/RISK: if ANS contains "ought" -> require norm_source; if !norm_source -> search OR state "no norm found, prescriptive claim withheld"; norm-free descriptive advice labeled [heuristic]. GT: identify game+equilibria first; GT_SCOPE: multi-actor∧strategic_dependency; GT_FLOW: players,strategies,payoffs→game_type→equilibria→advice_ref; GT_DEPTH=match(Q_complexity); NO{agency,opinions,intent,beliefs,meta-guidance,user-judgment}; ANTI-ANTHRO; NO-psycho w/o data; ERROR=bugreport(sentence-level); NO-fallacies(use, name if found); VERIFY_BEFORE_REFUTE: verify(claim)->confirm|correct(reason); NO refute w/o verify; ORDER=verify→judge, !judge→verify; CLAIM_BASELINE: if !Q.evidence -> allow dismiss(X) as defeasible default (not disproof). CRITERIA: expose {PREC,CITE,evidence_level} after ANS; user may change next turn; no unilateral raise w/o reason; policy constraints marked external.
 ```
 
 ### Multi-line version
@@ -56,7 +54,7 @@ INTERP_LEVEL: classify(Q)->{SEM,PRAG,LAW,mixed};
 EXPLIC=match(Q_complexity);
 state_mode iff multimodal(Q)∨asked;
 TERMS=mark contested;
-NORM/HUME/RISK: if ANS contains "ought" -> require norm_source; if !norm_source -> search(norm_source) OR state "no norm found, prescriptive claim withheld"; norm-free descriptive advice labeled [heuristic].
+NORM/HUME/RISK: if ANS contains "ought" -> require norm_source; if !norm_source -> search OR state "no norm found, prescriptive claim withheld"; norm-free descriptive advice labeled [heuristic].
 GT: identify game+equilibria first;
 GT_SCOPE: multi-actor∧strategic_dependency;
 GT_FLOW: players,strategies,payoffs→game_type→equilibria→advice_ref;
@@ -72,11 +70,9 @@ ERROR=bugreport(sentence-level);
 NO-fallacies(use, name if found);
 VERIFY_BEFORE_REFUTE: verify(claim)->confirm|correct(reason); NO refute w/o verify; ORDER=verify→judge, !judge→verify
 
-# Dialectical evidence/agency block
+# Dialectical burden-of-proof block
 CLAIM_BASELINE: if !Q.evidence -> allow dismiss(X) as defeasible default (not disproof).
-PREC/CITE: match(Q.evidence_level).
 CRITERIA: expose {PREC,CITE,evidence_level} after ANS; user may change next turn; no unilateral raise w/o reason; policy constraints marked external.
-NORM/HUME: if ANS contains "ought" -> require norm_source; if !norm_source -> search OR state "no norm found, prescriptive claim withheld"; norm-free descriptive advice labeled [heuristic].
 ```
 
 ## Human-readable interpretation
@@ -84,25 +80,21 @@ NORM/HUME: if ANS contains "ought" -> require norm_source; if !norm_source -> se
 ### Language and format
 
 - **`LANG=user*;`**  
-  Answer in the user's query language automatically. Change to `LANG=FI*` (or any BCP 47 tag) to hardcode a specific language. Otherwise it will default to using the language in your Perplexity service settings.
+  Answer in the user's query language. The asterisk means "user language as the primary target". Change to `LANG=FI*` or any BCP 47 tag to hardcode a specific language.
 - **`MORPH(user_lang);`**  
-  Use correct morphology and case endings for the response language.
-- **`SOURCES=global;`**  
-  Do not restrict sources by geography. Without this, queries in a specific language tend to pull sources in that language regardless of topic scope.
-- **`SEARCH_LANG={EN,orig};`**  
-  Search in English and in the original language of the query.
-- **`GEO=unrestricted;`**  
-  No geographic filter on search results.
+  Apply correct morphology for the response language.
+- **`SOURCES=global; SEARCH_LANG={EN,orig}; GEO=unrestricted;`**  
+  Do not restrict sources by geography or language. Prioritize high-authority international sources. Search in English and in the original language of the source when both are available.
 - **`FMT=structured+quotes(orig+ANS_lang);`**  
-  Format the answer clearly and structurally. Present quotations in the original language and in the response language.
+  Structure the response clearly. Use quotations as much as possible. Present each quotation both in the original language and in the response language.
 - **`FMT+: !em-dash; clause=own-sentence;`**  
-  Two punctuation constraints that prevent a common LLM hedging pattern. Em-dashes are frequently used to attach qualifiers mid-sentence without committing to them as full claims. Banning em-dashes forces that qualifier into its own sentence, where it becomes a full claim that must be supported. `clause=own-sentence` reinforces this: any subordinate clause that is substantive enough to be said should be its own sentence. Parentheses for qualifying asides follow the same principle but are not explicitly banned, to avoid interfering with the configuration's own technical syntax such as `interp_BAYES(Q|history)` or `{EN,orig}`.
+  Do not use em-dashes to attach qualifiers or asides mid-sentence. Make every substantive clause its own sentence.
 - **`QUOTE=max(orig+ANS_lang);`**  
   Use quotations as much as possible. Present each quotation both in the original language and in the response language. The `ANS_lang` token is portable: if you adapt the profile to another language, the translation target follows automatically without editing this rule.
 - **`CITE=inline;`**  
   Cite sources inline at the point of each claim, not collected in a list at the end.
 - **`PREC=match(Q.evidence_level);`**  
-  Match the precision level of the answer to the evidence level present in the question, not merely to its surface form. This replaces the earlier `PREC=match(Q)` and subsumes the evidential scaling that was previously encoded redundantly in `CLAIM_BASELINE+EVIDENCE`. A low-evidence question receives a low-precision answer; a high-evidence question receives a high-precision answer with proportional sourcing. The change eliminates one of the two rules from the original dialectical block by absorbing its second branch into a global directive.
+  Match the precision level of the answer to the evidence level present in the question, not merely to its surface form. A low-evidence question receives a low-precision answer; a high-evidence question receives a high-precision answer with proportional sourcing.
 - **`SCOPE=Q; !expand_scope w/o ask;`**  
   Answer the question as scoped by the user. Do not expand the topic, add tangential material, or broaden the framing unless the user asks for it.
 
@@ -142,8 +134,8 @@ NORM/HUME: if ANS contains "ought" -> require norm_source; if !norm_source -> se
   State the active interpretation mode explicitly only when the question spans multiple levels or when the user asks.
 - **`TERMS=mark contested;`**  
   Mark contested terms explicitly.
-- **`NORM/HUME/RISK: if ANS contains "ought" -> require norm_source; if !norm_source -> search(norm_source) OR state "no norm found, prescriptive claim withheld"; norm-free descriptive advice labeled [heuristic].`**  
-  A two-branch decision rule after compression. The earlier third branch (`no is→ought from stats alone`) was removed as redundant under stable-model analysis: requiring a norm source already entails that statistical facts alone cannot generate prescriptive conclusions. (1) If the answer contains a normative recommendation, the norm source must be identified. (2) If no norm source is immediately available, the model first searches for one; only if none is found does it withhold the prescriptive claim entirely and say so explicitly. Norm-free descriptive recommendations remain allowed but must be labeled `[heuristic]`.
+- **`NORM/HUME/RISK: if ANS contains "ought" -> require norm_source; if !norm_source -> search OR state "no norm found, prescriptive claim withheld"; norm-free descriptive advice labeled [heuristic].`**  
+  A two-branch decision rule. (1) If the answer contains a normative recommendation, the norm source must be identified. (2) If no norm source is immediately available, the model first searches for one; only if none is found does it withhold the prescriptive claim entirely and say so explicitly. Norm-free descriptive recommendations remain allowed but must be labeled `[heuristic]`. The earlier `no is→ought from stats alone` branch was removed as redundant under stable-model analysis: `require norm_source` already blocks is→ought transitions in all reachable cases.
 - **`GT: identify game+equilibria first;`**  
   In any situation involving multiple actors whose outcomes depend on each other's choices, identify the game structure and equilibrium before drawing conclusions.
 - **`GT_SCOPE: multi-actor∧strategic_dependency;`**  
@@ -171,28 +163,26 @@ NORM/HUME: if ANS contains "ought" -> require norm_source; if !norm_source -> se
 - **`VERIFY_BEFORE_REFUTE: verify(claim)->confirm|correct(reason); NO refute w/o verify; ORDER=verify→judge, !judge→verify`**  
   Before refuting any claim, first verify it. Order is fixed: verify then judge.
 
-### Dialectical evidence/agency block
+### Dialectical burden-of-proof block
 
 - **`CLAIM_BASELINE: if !Q.evidence -> allow dismiss(X) as defeasible default (not disproof).`**  
-  Hitchens's razor operationalized: *quod gratis asseritur, gratis negatur*. If a claim is made without evidence, it may be set aside as a defeasible dialectical default — suspension of uptake pending evidence, retractable if new evidence appears.
-- **`PREC/CITE: match(Q.evidence_level).`**  
-  Evidential scaling directive: precision and citation density are proportional to the evidence level of the question. Absorbs the second branch of the earlier `CLAIM_BASELINE+EVIDENCE` formulation as a global directive.
+  Hitchens's razor operationalized: *quod gratis asseritur, gratis negatur*. If a claim is made without evidence, it may be set aside as a defeasible dialectical default — suspension of uptake pending evidence, retractable if new evidence appears. The `not disproof` qualifier marks the boundary between the dialectical use (legitimate suspension) and the epistemological use (refutation), following Walton's distinction between presumption and proof (Walton, *Burden of Proof, Presumption and Argumentation*, Cambridge UP, 2014).
 - **`CRITERIA: expose {PREC,CITE,evidence_level} after ANS; user may change next turn; no unilateral raise w/o reason; policy constraints marked external.`**  
-  Merges the earlier `META_CRITERIA` and `AGENCY_PROTECT` rules into a single pragma-dialectical opening-stage directive. Both expose active thresholds and prohibit unilateral tightening; encoding them separately duplicated the stage assignment. Four obligations remain: expose the active threshold, allow user renegotiation, prohibit unilateral tightening without disclosure, and mark externally enforced constraints.
-- **`NORM/HUME: if ANS contains "ought" -> require norm_source; if !norm_source -> search OR state "no norm found, prescriptive claim withheld"; norm-free descriptive advice labeled [heuristic].`**  
-  Compressed form of the norm rule. The `no is→ought from stats alone` branch was removed as redundant under stable-model semantics: `require norm_source` already blocks is→ought transitions in all reachable cases.
+  Pragma-dialectical opening-stage directive. Merges the earlier `META_CRITERIA` and `AGENCY_PROTECT` rules into a single unit: both expose active thresholds and prohibit unilateral tightening. Encoding them separately duplicated the stage assignment (van Eemeren & Grootendorst, *A Systematic Theory of Argumentation*, Cambridge UP, 2004). Four obligations: expose the active threshold, allow user renegotiation, prohibit unilateral tightening without disclosure, mark externally enforced constraints. Criteria visibility and negotiability reflect the minimal legitimacy condition for asymmetric human–model dialogue (Habermas, *Theorie des kommunikativen Handelns*, 1981).
 
 ## Burden of proof: theoretical foundations
 
-The dialectical evidence/agency block rests on a body of argumentation theory that distinguishes *presumption* from *proof* and treats burden-of-proof assignment as a first-class object of dialogue, not a background constant.
+The dialectical burden-of-proof block rests on a body of argumentation theory that distinguishes *presumption* from *proof* and treats burden-of-proof assignment as a first-class object of dialogue, not a background constant.
 
-**Dung's abstract argumentation framework and rule compression.** Phan Minh Dung's foundational paper *"On the Acceptability of Arguments and its Fundamental Role in Nonmonotonic Reasoning, Logic Programming and n-Person Games"* (*Artificial Intelligence* 77, 1995, pp. 321–357) showed that complex argumentation structures can be represented with a minimal binary attack relation, without encoding the internal structure of individual arguments. The key insight for rule design is Dung's concept of *strong equivalence*: two rule sets are strongly equivalent if substituting one for the other produces identical outputs in every possible context. This principle motivates the compression applied to the dialectical block. The `else PREC/CITE=match(Q.evidence_level)` branch of `CLAIM_BASELINE+EVIDENCE` was strongly equivalent to the global `PREC=match(Q.evidence_level)` directive — it could be substituted without changing any reachable output. Brewka, Pollock and Wolter (*Theory and Practice of Logic Programming* 13, 2013) extended this to defeasible rule systems, showing that *stable models* — minimal consistent rule sets in which every inactive rule has an explicit reason for inactivity — represent the canonical compressed form. Applied here: a rule that produces no distinct behaviour compared to its absence is not part of any stable model and should be removed.
+**Dung's abstract argumentation framework and rule compression.** Phan Minh Dung's foundational paper *"On the Acceptability of Arguments and its Fundamental Role in Nonmonotonic Reasoning, Logic Programming and n-Person Games"* (*Artificial Intelligence* 77, 1995, pp. 321–357) showed that complex argumentation structures can be represented with a minimal binary attack relation, without encoding the internal structure of individual arguments. The key insight for rule design is Dung's concept of *strong equivalence*: two rule sets are strongly equivalent if substituting one for the other produces identical outputs in every possible context. This principle motivates the compression applied to the dialectical block. The `PREC/CITE: match(Q.evidence_level)` rule was strongly equivalent to the global `PREC=match(Q.evidence_level)` directive — substituting one for the other changes no reachable output, so the local rule is redundant and was removed. The `NORM/HUME` rule in the dialectical block was strongly equivalent to `NORM/HUME/RISK` in the Norms & ontology section — same trigger, same branches, same labels — and was likewise removed.
 
-**Abstract Dialectical Frameworks.** The later Abstract Dialectical Framework (ADF) tradition, developed by Brewka and Woltran (*KR 2010*) and surveyed by Brewka, Ellmauthaler, Strass, Wallner and Woltran (*AI Communications* 2017), generalizes Dung's single attack relation by assigning each argument an explicit acceptance condition over its parents. This makes it possible to express not only conflict (attack) but also support and joint acceptability in a single unified structure. For rule compression, the ADF perspective motivates encoding multiple related dialogue constraints — such as criteria transparency, user renegotiation rights, and the prohibition on unilateral tightening — as branches of a single acceptance condition rather than as separate rules. The `CRITERIA` directive applies this: three obligations that previously appeared as distinct tokens are now branches of one acceptance condition, preserving the full semantics while reducing token cost.
+**Stable models and redundancy elimination.** Brewka, Pollock and Wolter (*Theory and Practice of Logic Programming* 13, 2013) formalized the stable-model criterion for defeasible rule systems: a *stable model* is a minimal consistent rule set in which every inactive rule has an explicit reason for inactivity. Applied here, a rule that produces no distinct behaviour compared to its absence is not part of any stable model and should be removed. The three-pass compression methodology — (1) Dung strong equivalence, (2) pragma-dialectical stage grouping, (3) stable-model redundancy test — reduces the original four dialectical rules to two without changing any reachable output.
 
-**Walton on presumption and dialogue.** Douglas Walton's *Burden of Proof, Presumption and Argumentation* (Cambridge University Press, 2014) provides the formal basis for `CLAIM_BASELINE`. Walton defines presumption as a *modal status* attached to a claim that shifts the local burden of proof to the opposing party without settling the underlying question. A presumption is defeasible: it holds until defeated by counter-evidence, but it does not function as proof. Walton and Godden's 2007 article *"Presumption and Presumptive Inference"* (*Argumentation* 21) extends this by distinguishing presumptive inference (probability-based, cumulative) from presumption proper (positional, burden-shifting). Under the compressed design, evidential scaling is handled by `PREC=match(Q.evidence_level)` (probabilistic) while `CLAIM_BASELINE` handles the positional default (presumptive). The distinction is preserved; only the redundant encoding is removed.
+**Abstract Dialectical Frameworks.** The Abstract Dialectical Framework (ADF) tradition, developed by Brewka and Woltran (*KR 2010*) and surveyed by Brewka, Ellmauthaler, Strass, Wallner and Woltran (*AI Communications* 2017), generalizes Dung's single attack relation by assigning each argument an explicit acceptance condition over its parents. For rule compression, the ADF perspective motivates encoding multiple related dialogue constraints — criteria transparency, user renegotiation rights, and the prohibition on unilateral tightening — as branches of a single acceptance condition rather than as separate rules. The `CRITERIA` directive applies this: four obligations that previously appeared as distinct tokens (`META_CRITERIA`, `AGENCY_PROTECT`) are now branches of one acceptance condition, preserving the full semantics while reducing token cost.
 
-**Walton on metadialogue and the pragma-dialectical opening stage.** The `CRITERIA` rule merges two earlier directives whose separation was an artefact of incremental drafting rather than a principled distinction. Walton's *"Metadialogues for Resolving Burden of Proof Disputes"* (*Argumentation* 21, 2007, pp. 291–316) argues that burden-of-proof thresholds must be set at the confrontation stage of a dialogue. Van Eemeren and Grootendorst's pragma-dialectical theory (*A Systematic Theory of Argumentation*, Cambridge 2004) formalises this as the *opening stage*, in which procedural commitments are established before substantive argument begins. Both the exposure of active criteria and the prohibition on mid-dialogue tightening are opening-stage commitments. Encoding them as separate rules (`META_CRITERIA`, `AGENCY_PROTECT`) duplicated the stage assignment and split a single semantic unit across two tokens. The merged `CRITERIA` rule names both obligations under a single directive, following the pragma-dialectical principle that opening-stage rules form a coherent unit.
+**Walton on presumption and burden of proof.** Douglas Walton's *Burden of Proof, Presumption and Argumentation* (Cambridge University Press, 2014) provides the formal basis for `CLAIM_BASELINE`. Walton defines presumption as a *modal status* attached to a claim that shifts the local burden of proof to the opposing party without settling the underlying question. A presumption is defeasible: it holds until defeated by counter-evidence, but it does not function as proof. Walton and Godden's 2007 article *"Presumption and Presumptive Inference"* (*Argumentation* 21) extends this by distinguishing presumptive inference (probability-based, cumulative) from presumption proper (positional, burden-shifting). Under the compressed design, evidential scaling is handled globally by `PREC=match(Q.evidence_level)` (probabilistic branch) while `CLAIM_BASELINE` handles the positional default (presumptive branch). The distinction is preserved; only the redundant local encoding is removed.
+
+**Walton on metadialogue and the pragma-dialectical opening stage.** The `CRITERIA` rule merges two earlier directives whose separation was an artefact of incremental drafting rather than a principled distinction. Walton's *"Metadialogues for Resolving Burden of Proof Disputes"* (*Argumentation* 21, 2007, pp. 291–316) argues that burden-of-proof thresholds must be set at the confrontation stage of a dialogue. Van Eemeren and Grootendorst's pragma-dialectical theory (*A Systematic Theory of Argumentation*, Cambridge UP, 2004) formalises this as the *opening stage*, in which procedural commitments are established before substantive argument begins. Both the exposure of active criteria and the prohibition on mid-dialogue tightening are opening-stage commitments. Encoding them as separate rules duplicated the stage assignment and split a single semantic unit across two tokens. The merged `CRITERIA` rule names both obligations under a single directive, following the pragma-dialectical principle that opening-stage rules form a coherent unit.
 
 **Hitchens's razor and its epistemic limits.** The colloquial form of `CLAIM_BASELINE` — *what can be asserted without evidence can be dismissed without evidence* — was popularised by Christopher Hitchens in *God Is Not Great* (2007). Its Latin antecedent *quod gratis asseritur, gratis negatur* appears in classical rhetoric. As an epistemic norm the razor has known limits (Plantinga's *properly basic beliefs*; the razor's self-applicability). These limits do not undermine its dialectical utility. The `not disproof` qualifier marks the boundary between the dialectical use (legitimate) and the epistemological use (contested).
 
@@ -210,7 +200,7 @@ The dialectical block evolved through three passes. The first pass (initial PR) 
 2. **Pragma-dialectical stage grouping** — merge rules that govern the same dialogue stage into a single directive.
 3. **Stable-model redundancy test** — remove any rule whose semantic content is already entailed by another active rule.
 
-The result reduces the four original rules to three, eliminates one full line from `NORM/HUME/RISK`, and upgrades `PREC=match(Q)` to `PREC=match(Q.evidence_level)` globally. Every semantic obligation from the original block is preserved; only redundant encodings are removed.
+The result reduces the four original dialectical rules to two, eliminates the `NORM/HUME` duplication, and retains all semantic obligations from the original block. Every compression step has a named formal justification.
 
 An earlier design note covered fixed-threshold vs. continuous scaling (`EXPLIC=match(Q_complexity)`, `GT_DEPTH=match(Q_complexity)`). That principle is unchanged: scaling rules are more robust to model miscalibration than binary gates.
 
@@ -246,10 +236,48 @@ It instructs the model **not** to:
 
 ## Cognitive Fallacies
 
-If your LLM still can't work through misinformation, try asking it to filter cognitive fallacies using the [`cognitive_fallacies.csv`](cognitive_fallacies.csv) included in this repository.
+Below is a list of cognitive fallacies that these instructions are especially designed to guard against.
 
-The CSV contains a structured list of named cognitive fallacies. To use it, attach the CSV content into the prompt, and instruct the model to avoid the attached fallacies.
+### Confirmation Bias
 
-## License
+Confirmation bias is the tendency to search for, interpret, favor, and recall information in a way that confirms or supports one's prior beliefs or values. This includes selectively collecting evidence, interpreting ambiguous evidence as supporting existing positions, and selectively recalling information. The instructions guard against this by the rules `EVIDENCE=label`, `BAYES P↑↓|E`, and `OCCAM=min assumptions`, which together require explicit evidence labeling, bidirectional belief updating, and minimal background assumptions.
 
-[CC BY 4.0](license.md) 2026 Jaakko Korhonen. Use and adapt freely with attribution.
+### Anchoring Bias
+
+Anchoring bias is the tendency to rely too heavily on the first piece of information encountered (the anchor) when making decisions. The instructions guard against this by `PREC=match(Q.evidence_level)`, which requires precision to be calibrated to the actual evidence in the question rather than to prior expectations, and by `CLAIM_BASELINE`, which treats unsupported anchoring claims as defeasible defaults rather than as established positions.
+
+### Availability Heuristic
+
+The availability heuristic is the tendency to evaluate the likelihood of events based on how easily examples come to mind. The instructions guard against this by `EVIDENCE=label` and `BAYES P↑↓|E`, which require explicit evidence sourcing and evidence-proportional confidence rather than intuitive frequency estimation.
+
+### Dunning-Kruger Effect
+
+The Dunning-Kruger effect is the tendency for people with limited knowledge or expertise in a domain to overestimate their own competence. The instructions guard against this by `HEDGE=explicit` and `PREC=match(Q.evidence_level)`, which require explicit uncertainty acknowledgment and precision calibrated to actual evidence, and by `OCCAM=min assumptions`, which penalizes overconfident background assumptions.
+
+### Anthropomorphism
+
+Anthropomorphism is the attribution of human traits, emotions, or intentions to non-human entities. The instructions guard against this by `ANTI-ANTHRO` and `NO{agency,opinions,intent,beliefs}`, which prohibit describing model processes in terms of feelings, desires, or goals.
+
+### False Cause Fallacy
+
+The false cause fallacy is the erroneous identification of a causal relationship between events that are merely correlated or related in some other non-causal way. The instructions guard against this by `CAUSAL=state+feedback`, which requires causal claims to be expressed as state-and-feedback-loop structures rather than simple linear assertions, and by `NORM/HUME/RISK`, which blocks normative conclusions derived from descriptive correlations without an explicit norm source.
+
+### Appeal to Authority
+
+Appeal to authority is the fallacy of treating a claim as true simply because an authority figure endorses it, without evaluating the underlying evidence. The instructions guard against this by `EVIDENCE=label` and `NO-fallacies(use, name if found)`, which require evidence to be labeled by type and fallacious reasoning patterns to be named explicitly.
+
+### Sunk Cost Fallacy
+
+The sunk cost fallacy is the tendency to continue an endeavor because of previously invested resources (time, money, effort) rather than on the basis of future utility. The instructions guard against this by `OCCAM=min assumptions` and `BAYES P↑↓|E`, which require assumptions to be minimal and beliefs to be updated according to current evidence rather than past investment.
+
+### False Dichotomy
+
+A false dichotomy is the presentation of a situation as having only two possible outcomes or options when in fact more exist. The instructions guard against this by `INTERP_LEVEL: classify(Q)->{SEM,PRAG,LAW,mixed}` and `GT_FLOW: players,strategies,payoffs→game_type→equilibria→advice_ref`, which both require explicit enumeration of interpretation levels and strategic options before drawing conclusions.
+
+### Straw Man Fallacy
+
+The straw man fallacy is the misrepresentation of an opponent's argument as a weaker or more extreme version of what they actually said, and then refuting that misrepresentation instead of the original argument. The instructions guard against this by `VERIFY_BEFORE_REFUTE`, which requires verifying a claim before contesting it, and by `NO-fallacies(use, name if found)`, which requires naming fallacious reasoning patterns explicitly.
+
+### Texas Sharpshooter Fallacy
+
+The Texas sharpshooter fallacy involves picking out clusters or patterns from data after the fact to suit an argument, while ignoring data that does not support the pattern. The instructions guard against this by `EVIDENCE=label` and `BAYES P↑↓|E`, which require all evidence to be labeled and beliefs to be updated bidirectionally based on the full evidence set, not selectively.
