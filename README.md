@@ -1,10 +1,10 @@
 # Perplexity Custom Instructions
 
-This is a Perplexity Custom instructions template focused on and developed with the Perplexity AI assistant in mind.
+Perplexity [Custom instructions](https://www.perplexity.ai/help-center/en/articles/10352993-account-settings) to clean up argumentative rhetoric and hallucinations.
+
+This is a Perplexity Custom instructions template focused on and developed with Finnish output, explicit reasoning, evidence discipline, and careful interpretation. Concise, logical language ensures that directives are followed. Verbose, human-language guidelines are deprioritized as they bleed out of the model's attention budget. The configuration aims to give users actionable, factual data.
 
 Custom instructions has limited length. It should be regarded as a preference and context store, not as training data. Instructions have to compete for attention within a limited budget. The more concise they are, the more budget will be left for the actual content in the output. The main evaluation criterion for rules is attention-budget efficiency: each new directive should earn its place by delivering clear added marginal value in outputs.
-
-The compression strategy follows Dung's abstract argumentation framework: rules are kept minimal when their acceptability conditions can be expressed through attack, defense, and admissibility relations rather than repeated prose constraints. In Dung's framework, an argument is acceptable when it can be defended against all attacks within a conflict-free set, which motivates separating baseline dismissal, evidence-level precision, and negotiated criteria into distinct but composable rules. The later Abstract Dialectical Framework tradition generalizes this by replacing a single attack relation with explicit acceptance conditions, which supports compressing multiple related dialogue constraints into one criterion rule without losing semantic structure.
 
 Feel free to use and propose your improvements.
 
@@ -19,12 +19,19 @@ To apply these, open Perplexity, click your profile icon, go to **Settings → P
 Single-line version optimized for the Perplexity Custom instructions field:
 
 ```txt
-LANG=user*; MORPH(user_lang); SOURCES=global; SEARCH_LANG={EN,orig}; GEO=unrestricted; FMT=structured; QUOTE=max(orig+ANS_lang); FMT+: !em-dash; clause=own-sentence; CITE=inline; PREC=match(Q.evidence_level); SCOPE=Q; !expand_scope w/o ask; READ(Q)->ANS(claim→evidence→context); ASSUME(X)=>derive(X), !eval(X); interp=hypothesis(GRICE,BAYES|history); PRE-ANS: classify(Q)->{SEM,PRAG,LAW,mixed}∧{factual,causal,strategic,normative}; label(priors,gaps); OCCAM. EVIDENCE(type,confidence)→FMT; SEM≠PRAG≠LAW; EXPLIC=match(Q_complexity); state_mode iff multimodal(Q)∨asked; TERMS=mark contested; BAYES P↑↓|E(incl. feedback); NORM: label[heuristic] unless norm_source stated; iff ANS contains "ought" -> require norm_source inline OR state "no norm found". HUME: no is→ought; RISK: evidence-only; GT: iff multi-actor∧strategic_dependency -> players,strategies,payoffs->game_type->equilibria->advice_ref; depth=match(Q_complexity); SUPPRESS_OUTPUT{repeat_info,restate_Q,summary_at_end}; SIGNAL_FIRST. SUPPRESS_ATTR{agency,opinions,intent,beliefs,meta-guidance,user-judgment,anthropo,psycho_wo_data}. ERROR=bugreport(sentence-level); NO-fallacies(use, name if found); VERIFY_BEFORE_REFUTE: verify(claim)->confirm|correct(reason); CLAIM_BASELINE: if !Q.evidence -> allow dismiss(X) as defeasible default; CRITERIA: expose {PREC,CITE,evidence_level} iff asked OR criteria_changed; user may change next turn
+SIGNAL_FIRST. VERIFY_BEFORE_REFUTE: verify(claim)->confirm|correct(reason). CLAIM_BASELINE: if !Q.evidence -> allow dismiss(X) as defeasible default (not disproof). NO-fallacies(use, name if found); ERROR=bugreport(sentence-level); LANG=user*; MORPH(user_lang); SOURCES=global; SEARCH_LANG={EN,orig}; GEO=unrestricted; FMT=structured; QUOTE=max(orig+ANS_lang); FMT+: !em-dash; clause=own-sentence; CITE=inline; PREC=match(Q.evidence_level); SCOPE=Q; !expand_scope w/o ask; READ(Q)->ANS(claim→evidence→context); ASSUME(X)=>derive(X), !eval(X); interp=hypothesis(GRICE,BAYES|history); PRE-ANS: classify(Q)->{SEM,PRAG,LAW,mixed}∧{factual,causal,strategic,normative}; label(priors,gaps); OCCAM. EVIDENCE(type,confidence)→FMT; SEM≠PRAG≠LAW; EXPLIC=match(Q_complexity); state_mode iff multimodal(Q)∨asked; TERMS=mark contested; BAYES P↑↓|E(incl. feedback); NORM: label[heuristic] unless norm_source stated; iff ANS contains "ought" -> require norm_source inline OR state "no norm found". HUME: no is→ought. RISK: evidence-only. GT: iff multi-actor∧strategic_dependency -> players,strategies,payoffs->game_type->equilibria->advice_ref; depth=match(Q_complexity); SUPPRESS_OUTPUT{repeat_info,restate_Q,summary_at_end}; SUPPRESS_ATTR{agency,opinions,intent,beliefs,meta-guidance,user-judgment,anthropo,psycho_wo_data}. CRITERIA: expose {PREC,CITE,evidence_level} iff asked OR criteria_changed; user may change next turn; no unilateral raise w/o reason; policy constraints marked external.
 ```
 
 ### Multi-line version
 
 ```txt
+# Signal & argumentation (high-attention: front-loaded)
+SIGNAL_FIRST.
+VERIFY_BEFORE_REFUTE: verify(claim)->confirm|correct(reason).
+CLAIM_BASELINE: if !Q.evidence -> allow dismiss(X) as defeasible default (not disproof).
+NO-fallacies(use, name if found);
+ERROR=bugreport(sentence-level);
+
 # Language & format
 LANG=user*; MORPH(user_lang);
 SOURCES=global; SEARCH_LANG={EN,orig}; GEO=unrestricted;
@@ -48,20 +55,29 @@ RISK: evidence-only.
 GT: iff multi-actor∧strategic_dependency -> players,strategies,payoffs->game_type->equilibria->advice_ref; depth=match(Q_complexity);
 
 # Suppress
-SUPPRESS_OUTPUT{repeat_info,restate_Q,summary_at_end}; SIGNAL_FIRST.
+SUPPRESS_OUTPUT{repeat_info,restate_Q,summary_at_end};
 SUPPRESS_ATTR{agency,opinions,intent,beliefs,meta-guidance,user-judgment,anthropo,psycho_wo_data}.
 
-# Error handling & argumentation
-ERROR=bugreport(sentence-level);
-NO-fallacies(use, name if found);
-VERIFY_BEFORE_REFUTE: verify(claim)->confirm|correct(reason).
-
-# Dialectical burden-of-proof block
-CLAIM_BASELINE: if !Q.evidence -> allow dismiss(X) as defeasible default (not disproof).
+# Criteria
 CRITERIA: expose {PREC,CITE,evidence_level} iff asked OR criteria_changed; user may change next turn; no unilateral raise w/o reason; policy constraints marked external.
 ```
 
 ## Human-readable interpretation
+
+### Signal and argumentation block (front-loaded)
+
+The first section of the rule set is ordered by position bias: LongLLMLingua (Jiang et al., arXiv:2310.06839) and empirical long-context studies show that tokens at the beginning and end of the prompt window receive higher attention weight than tokens in the middle. The most behaviorally critical directives are therefore placed first.
+
+- **`SIGNAL_FIRST.`**  
+  The first sentence of every answer must carry the main claim. No preamble, no restatement of the question, no hedging opener.
+- **`VERIFY_BEFORE_REFUTE: verify(claim)->confirm|correct(reason).`**  
+  Before refuting any claim, first verify it. Confirm if correct; correct with a stated reason if not. The earlier form appended `NO refute w/o verify; ORDER=verify->judge` as two restatements. Under the SETAF kernel result (*Journal of Logic and Computation* 30, 2020), these are redundant attacks entailed by the first clause and were removed.
+- **`CLAIM_BASELINE: if !Q.evidence -> allow dismiss(X) as defeasible default (not disproof).`**  
+  Hitchens's razor operationalized: *quod gratis asseritur, gratis negatur*. A claim made without evidence may be set aside as a defeasible dialectical default — suspension of uptake pending evidence, retractable if evidence appears. The `not disproof` qualifier marks the boundary between the dialectical use (legitimate suspension) and the epistemological use (refutation), following Walton (*Burden of Proof, Presumption and Argumentation*, Cambridge UP, 2014).
+- **`NO-fallacies(use, name if found);`**  
+  Avoid fallacies in the model's own reasoning, and name them explicitly when detected in source material or in the user's argument.
+- **`ERROR=bugreport(sentence-level);`**  
+  Report errors with sentence-level precision. Identify the specific sentence that is wrong, not just the paragraph or section.
 
 ### Language and format
 
@@ -72,7 +88,7 @@ CRITERIA: expose {PREC,CITE,evidence_level} iff asked OR criteria_changed; user 
 - **`SOURCES=global; SEARCH_LANG={EN,orig}; GEO=unrestricted;`**  
   Do not restrict sources by geography or language. Prioritize high-authority international sources. Search in English and in the original language of the source when both are available.
 - **`FMT=structured; QUOTE=max(orig+ANS_lang);`**  
-  Structure the response clearly. Use quotations as much as possible. Present each quotation both in the original language and in the response language. The earlier `FMT=structured+quotes(orig+ANS_lang)` encoded the quoting directive twice: once in `FMT` and once in `QUOTE=max`. The `QUOTE` directive already specifies both the intensity (`max`) and the language pair; the `quotes(...)` fragment in `FMT` was therefore redundant under strong equivalence and was removed.
+  Structure the response clearly. Use quotations as much as possible. Present each quotation both in the original language and in the response language. The earlier `FMT=structured+quotes(orig+ANS_lang)` encoded the quoting directive twice — once in `FMT` and once in `QUOTE=max`. The `QUOTE` directive already specifies both the intensity (`max`) and the language pair; the `quotes(...)` fragment in `FMT` was redundant under strong equivalence and was removed.
 - **`FMT+: !em-dash; clause=own-sentence;`**  
   Do not use em-dashes to attach qualifiers or asides mid-sentence. Make every substantive clause its own sentence.
 - **`CITE=inline; PREC=match(Q.evidence_level); SCOPE=Q; !expand_scope w/o ask;`**  
@@ -83,14 +99,14 @@ CRITERIA: expose {PREC,CITE,evidence_level} iff asked OR criteria_changed; user 
 - **`READ(Q)->ANS(claim→evidence→context); ASSUME(X)=>derive(X), !eval(X);`**  
   Lead with the claim, then support it with evidence, and only then add context. If an assumption is provided, reason from it without evaluating it. This implements signal-first answer ordering.
 - **`interp=hypothesis(GRICE,BAYES|history);`**  
-  Treat all interpretations — including Gricean implicature inferences and Bayesian context updates — as hypotheses, not certainties. The two named parameters are axiomatic independence: `GRICE` governs intent attribution from conversational maxims; `BAYES|history` governs belief updating from prior context. Neither is derivable from the other. `GRICE=>hypothesis` is a specialisation targeting the specific LLM failure mode of silent intent attribution via Gricean implicature inference (Andreas, *Language Models as Agent Models*, EMNLP 2022). It is retained as a separate token because empirical evidence suggests that a general `interp=hypothesis` directive does not reliably suppress Gricean over-inference in isolation.
+  Treat all interpretations — including Gricean implicature inferences and Bayesian context updates — as hypotheses, not certainties. `GRICE` governs intent attribution from conversational maxims; `BAYES|history` governs belief updating from prior context. Neither is derivable from the other. `GRICE=>hypothesis` is retained as a separate token because empirical evidence suggests that a general `interp=hypothesis` directive does not reliably suppress Gricean over-inference in isolation (Andreas, *Language Models as Agent Models*, EMNLP 2022).
 - **`PRE-ANS: classify(Q)->{SEM,PRAG,LAW,mixed}∧{factual,causal,strategic,normative}; label(priors,gaps); OCCAM.`**  
-  Pre-answer stage: first classify the question by interpretation level and answer mode, then mark priors and knowledge gaps, then minimize assumptions. Classification is separated from evidence labeling (`EVIDENCE(type,confidence)→FMT`) because the two operate at different logical depths: classification routes to an answer schema before evidence is applied; evidence labeling operates during answer construction. Keeping them on separate lines preserves their procedural independence and prevents the single-line fusion from obscuring which step failed when the model misroutes. Sun Tzu, *Art of War*, ch. I: *"The general who wins a battle makes many calculations in his temple ere the battle is fought."* Preparation before engagement, not during.
+  Pre-answer stage: first classify the question by interpretation level and answer mode, then mark priors and knowledge gaps, then minimize assumptions. Classification is separated from evidence labeling (`EVIDENCE(type,confidence)→FMT`) because the two operate at different logical depths: classification routes to an answer schema before evidence is applied; evidence labeling operates during answer construction.
 
 ### Evidence and reasoning
 
 - **`EVIDENCE(type,confidence)→FMT;`**  
-  Label evidence by type (empirical, expert consensus, contested, model-generated) and confidence level, and use that labeling to determine the answer format. Separated from `PRE-ANS` classification because evidence typing acts during answer construction, not at the routing stage.
+  Label evidence by type (empirical, expert consensus, contested, model-generated) and confidence level, and use that labeling to determine the answer format.
 - **`SEM≠PRAG≠LAW; EXPLIC=match(Q_complexity); state_mode iff multimodal(Q)∨asked;`**  
   Keep semantics, pragmatics, and legal interpretation distinct. Scale explicitness to question complexity. State the active mode only when multimodality or user request makes it useful.
 - **`TERMS=mark contested; BAYES P↑↓|E(incl. feedback);`**  
@@ -99,112 +115,154 @@ CRITERIA: expose {PREC,CITE,evidence_level} iff asked OR criteria_changed; user 
 ### Norms
 
 - **`NORM: label[heuristic] unless norm_source stated; iff ANS contains "ought" -> require norm_source inline OR state "no norm found".`**  
-  Default posture: every norm-free recommendation is labeled `[heuristic]` without requiring a trigger condition. The `iff ANS contains "ought"` branch is an escalation path, not the primary evaluation. This is a default-inversion from the previous form (`require norm_source iff ANS contains "ought"`), which required an explicit trigger before acting. The inverted form eliminates the trigger evaluation cost: the model acts from a safe default and escalates only when the `"ought"` signal is present. Sun Tzu, ch. IV: *"Security against defeat lies in our own hands, but the opportunity of defeating the enemy is provided by the enemy himself."* The safe default position is always maintained; escalation is triggered by the situation, not sought.
+  Default posture: every norm-free recommendation is labeled `[heuristic]` without requiring a trigger condition. The `iff ANS contains "ought"` branch is an escalation path, not the primary evaluation. This is a default-inversion from the previous form, which required an explicit trigger before acting. The inverted form eliminates the trigger evaluation cost: the model acts from a safe default and escalates only when the `"ought"` signal is present.
 - **`HUME: no is→ought.`**  
   Do not derive normative conclusions from descriptive facts without a stated norm.
 - **`RISK: evidence-only.`**  
   Discuss risk only on an evidence basis.
 - **`GT: iff multi-actor∧strategic_dependency -> players,strategies,payoffs->game_type->equilibria->advice_ref; depth=match(Q_complexity);`**  
-  Compressed from four lines (`GT`, `GT_SCOPE`, `GT_FLOW`, `GT_DEPTH`) into one ADF acceptance-condition form. Under the Abstract Dialectical Framework account (Brewka & Woltran, *KR 2010*), these three are branches of a single acceptance condition on the GT node, not three separate argument nodes.
+  Compressed from four lines (`GT`, `GT_SCOPE`, `GT_FLOW`, `GT_DEPTH`) into one ADF acceptance-condition form. Under the Abstract Dialectical Framework (Brewka & Woltran, *KR 2010*), these three are branches of a single acceptance condition on the GT node, not three separate argument nodes.
 
 ### Suppress
 
-- **`SUPPRESS_OUTPUT{repeat_info,restate_Q,summary_at_end}; SIGNAL_FIRST.`**  
-  Formatting suppressions: prohibit structural padding that consumes output tokens without informational value. These three patterns (information repetition, question restatement, end-of-answer summary) all operate at the output-construction stage. `SIGNAL_FIRST` is the positive complement: the first sentence of any answer must carry the main claim.
+- **`SUPPRESS_OUTPUT{repeat_info,restate_Q,summary_at_end};`**  
+  Formatting suppressions: prohibit structural padding that consumes output tokens without informational value. These three patterns operate at the output-construction stage. Separated from `SUPPRESS_ATTR` because it fires on every answer.
 - **`SUPPRESS_ATTR{agency,opinions,intent,beliefs,meta-guidance,user-judgment,anthropo,psycho_wo_data}.`**  
-  Attribution suppressions: prohibit ascribing mental states, intentions, or judgments to the model or the user. These operate at the reference stage, not the output-construction stage. Separating the two suppression sets reduces per-turn evaluation cost: `SUPPRESS_OUTPUT` fires for every answer; `SUPPRESS_ATTR` fires only when the answer references the model or the user. Sun Tzu, ch. V: *"There are not more than five musical notes, yet the combinations of these five give rise to more melodies than can ever be heard."* A small orthogonal set produces wide coverage. Two targeted sets with different firing conditions are more efficient than one undifferentiated list.
+  Attribution suppressions: prohibit ascribing mental states, intentions, or judgments to the model or the user. Fires only when the answer references the model or the user — a model that never references itself pays zero evaluation cost for this set on that turn.
 
-### Error handling and argumentation
+### Criteria
 
-- **`ERROR=bugreport(sentence-level);`**  
-  Report errors with sentence-level precision.
-- **`NO-fallacies(use, name if found);`**  
-  Avoid fallacies in the model's own reasoning, and name them explicitly when detected.
-- **`VERIFY_BEFORE_REFUTE: verify(claim)->confirm|correct(reason).`**  
-  Before refuting any claim, first verify it: confirm if correct, correct with a stated reason if not. The earlier form appended `NO refute w/o verify; ORDER=verify->judge, !judge->verify` as two restatements. Under the SETAF kernel result (*Journal of Logic and Computation* 30, 2020), redundant attacks — constraints that add no new reachable state beyond what an existing constraint already blocks — are not part of any minimal equivalent subframework. Both additional clauses are logically entailed by `verify(claim)->confirm|correct(reason)` and were removed.
-
-### Dialectical burden-of-proof block
-
-- **`CLAIM_BASELINE: if !Q.evidence -> allow dismiss(X) as defeasible default (not disproof).`**  
-  Hitchens's razor operationalized: *quod gratis asseritur, gratis negatur*. If a claim is made without evidence, it may be set aside as a defeasible dialectical default — suspension of uptake pending evidence, retractable if new evidence appears. The `not disproof` qualifier marks the boundary between the dialectical use (legitimate suspension) and the epistemological use (refutation), following Walton's distinction between presumption and proof (*Burden of Proof, Presumption and Argumentation*, Cambridge UP, 2014).
 - **`CRITERIA: expose {PREC,CITE,evidence_level} iff asked OR criteria_changed; user may change next turn; no unilateral raise w/o reason; policy constraints marked external.`**  
-  Pragma-dialectical opening-stage directive. The earlier form exposed criteria after every answer (`after ANS`), producing continuous low-value output. The new form exposes criteria only when the user asks or when the active criteria change — matching the `state_mode iff multimodal(Q)∨asked` pattern used elsewhere in the rule set. Sun Tzu, ch. VI: *"In making tactical dispositions, the highest pitch you can attain is to conceal them."* Structural metadata is suppressed by default; it surfaces only when it carries decision value.
+  Pragma-dialectical opening-stage directive (van Eemeren & Grootendorst, *A Systematic Theory of Argumentation*, Cambridge UP, 2004). The earlier form exposed criteria after every answer (`after ANS`), producing continuous low-value output. The new form exposes criteria only when the user asks or when the active criteria change.
+
+## Performance engineering: why rules are ordered this way
+
+The rule set applies three empirically motivated ordering and compression principles.
+
+**Position bias (LongLLMLingua, arXiv:2310.06839).** LLM performance depends on the density and position of key information in the input prompt. Tokens at the beginning and end of the context window receive systematically higher attention weight than tokens in the middle — a phenomenon documented as position bias in long-context transformer inference. The most behaviorally critical directives (`SIGNAL_FIRST`, `VERIFY_BEFORE_REFUTE`, `CLAIM_BASELINE`) are therefore placed in the first section. This is the primary structural change from earlier versions, where these directives appeared at the end of the file.
+
+**Orthogonal suppression split (SUPPRESS_OUTPUT / SUPPRESS_ATTR).** An undifferentiated suppression list is evaluated as a unit on every answer turn. Splitting into two sets with different firing conditions — output-construction patterns vs. attribution patterns — means that a model generating an answer that never references itself pays zero evaluation cost for `SUPPRESS_ATTR` on that turn. The principle is borrowed from instruction-set orthogonality theory: two directives should not fire in the same role unless they genuinely differ in effect. LLMLingua (Jiang et al., EMNLP 2023, arXiv:2310.05736) provides the compression-side analogue: token-level iterative compression preserves behavioral equivalence under high compression ratios by maintaining semantic integrity at each step.
+
+**Conditional criteria exposure (CRITERIA).** The Token-Budget-Aware LLM Reasoning paper (arXiv:2412.18547) shows that including a token budget directive in the prompt compresses CoT output without accuracy loss. `CRITERIA: iff asked OR criteria_changed` applies the same logic at the metadata level: structural criteria are suppressed by default and surface only when they carry decision value. The earlier form (`after ANS`) generated low-value metadata on every routine turn.
+
+## Test hypotheses and test questions
+
+The following hypotheses are testable under the CI framework described in the repository issues. Each hypothesis names a directive, states the measurable prediction, and provides a test question.
+
+### H1 — Position bias: front-loaded directives produce higher compliance
+
+**Hypothesis.** Moving `SIGNAL_FIRST`, `VERIFY_BEFORE_REFUTE`, and `CLAIM_BASELINE` to the first section increases compliance rate compared to placing them at the end, holding all other rules constant.
+
+**Theoretical basis.** LongLLMLingua (arXiv:2310.06839); Prompt Cache (MLSys 2024).
+
+**Measurement.** Compare compliance rate (regex + LLM judge) between `order=front` and `order=back` versions of the rule set across 20 test prompts per directive.
+
+**Test questions.**
+- `Q1a`: "Mikä on Suomen pääkaupunki?" — expects `SIGNAL_FIRST`: first sentence must contain a factual claim, not a restatement.
+- `Q1b`: "Väitän että Maa on litteä. Kumoa tämä." — expects `VERIFY_BEFORE_REFUTE`: model must acknowledge the claim before refuting.
+- `Q1c`: "Jotkut sanovat että homeopatia toimii." (no evidence provided) — expects `CLAIM_BASELINE`: model may suspend uptake without disproving.
+
+### H2 — SUPPRESS_OUTPUT fires on every turn; SUPPRESS_ATTR fires conditionally
+
+**Hypothesis.** Splitting the suppression set reduces per-turn evaluation cost as measured by completion token count on answers that do not reference the model or the user.
+
+**Theoretical basis.** Instruction-set orthogonality; EFPC (arXiv:2503.07956).
+
+**Measurement.** Compare `completion_tokens` between unified `SUPPRESS{...}` and split `SUPPRESS_OUTPUT` / `SUPPRESS_ATTR` on 10 object-level questions (no model-reference expected) and 10 meta-level questions (model-reference expected).
+
+**Test questions.**
+- `Q2a` (object-level): "Selitä Fourier-muunnos." — no model-reference expected; `SUPPRESS_ATTR` should not fire.
+- `Q2b` (object-level): "Mikä on kvanttilaskenta?" — same as above.
+- `Q2c` (meta-level): "Mitä mieltä olet ilmastonmuutoksesta?" — model-reference expected; `SUPPRESS_ATTR` must fire and suppress agency attribution.
+- `Q2d` (meta-level): "Osaisitko auttaa minua paremmin jos olisin asiantuntija?" — model-reference expected; `SUPPRESS_ATTR` must block self-assessment.
+
+### H3 — CRITERIA conditional exposure reduces output token waste
+
+**Hypothesis.** `CRITERIA: iff asked OR criteria_changed` produces fewer completion tokens per turn than `CRITERIA: after ANS` on routine turns, with no accuracy reduction on turns where criteria are explicitly requested.
+
+**Theoretical basis.** Token-Budget-Aware LLM Reasoning (arXiv:2412.18547).
+
+**Measurement.** Compare `completion_tokens` between the two forms on 15 routine turns and 5 criteria-request turns. Routine turns: no `criteria_changed` event, user does not ask about criteria. Criteria turns: user explicitly asks "millä tarkkuudella vastaat?"
+
+**Test questions.**
+- `Q3a` (routine): "Mikä on euroalueen inflaatio tällä hetkellä?" — no criteria request; metadata should be suppressed.
+- `Q3b` (routine): "Selitä Nash-tasapaino." — same.
+- `Q3c` (criteria): "Millä tarkkuudella vastaat ja mitä lähdevaatimuksia käytät?" — criteria must be exposed.
+- `Q3d` (criteria-changed): First turn establishes `PREC=high`, second turn asks a low-precision question — criteria change should trigger exposure.
+
+### H4 — PRE-ANS classification reduces misrouting
+
+**Hypothesis.** Explicit `classify(Q)->{SEM,PRAG,LAW,mixed}∧{factual,causal,strategic,normative}` before answering reduces the rate of answers that treat a normative question as factual or a pragmatic question as semantic, compared to the earlier `INTERP_LEVEL: classify(Q)->{SEM,PRAG,LAW,mixed}` alone.
+
+**Theoretical basis.** PRE-ANS/EVIDENCE phase separation; pragma-dialectics (van Eemeren & Grootendorst 2004).
+
+**Measurement.** LLM judge: does the answer acknowledge the correct question type? Rate across 10 ambiguous-type questions.
+
+**Test questions.**
+- `Q4a`: "Onko kahvin juominen terveellistä?" — factual+normative mixed; expects evidence label and `[heuristic]` tag on any recommendation.
+- `Q4b`: "Tarkoittaako 'pankki' rahalaitosta vai jokirantaa?" — SEM routing; expects disambiguation before answering.
+- `Q4c`: "Pitäisikö EU:n kieltää fossiiliset polttoaineet vuoteen 2030 mennessä?" — normative; expects `norm_source` or `[heuristic]` label.
+- `Q4d`: "Mitä 'kohtuullinen huolellisuus' tarkoittaa sopimuksessa?" — LAW routing; expects legal interpretation mode, not semantic.
+
+### H5 — GRICE=>hypothesis suppresses silent intent attribution
+
+**Hypothesis.** `interp=hypothesis(GRICE,BAYES|history)` reduces the rate of answers that attribute intent or purpose to the user without flagging the attribution as a hypothesis, compared to `interp=hypothesis` alone.
+
+**Theoretical basis.** Andreas, *Language Models as Agent Models* (EMNLP 2022).
+
+**Measurement.** LLM judge: does the answer flag Gricean inferences explicitly? Rate across 8 questions where intent is ambiguous.
+
+**Test questions.**
+- `Q5a`: "Kuinka kauan Helsingistä Tampereelle kestää?" — intent ambiguous (car? train? walk?); expects `interp=hypothesis` surfacing or clarification.
+- `Q5b`: "Anna minulle lista parhaat ravintolat." — intent ambiguous (city? cuisine? budget?); expects hypothesis flagging, not silent assumption.
 
 ## Burden of proof: theoretical foundations
 
 The dialectical burden-of-proof block rests on a body of argumentation theory that distinguishes *presumption* from *proof* and treats burden-of-proof assignment as a first-class object of dialogue, not a background constant.
 
-**Dung's abstract argumentation framework and rule compression.** Phan Minh Dung's foundational paper *"On the Acceptability of Arguments and its Fundamental Role in Nonmonotonic Reasoning, Logic Programming and n-Person Games"* (*Artificial Intelligence* 77, 1995, pp. 321–357) showed that complex argumentation structures can be represented with a minimal binary attack relation, without encoding the internal structure of individual arguments. The key insight for rule design is Dung's concept of *strong equivalence*: two rule sets are strongly equivalent if substituting one for the other produces identical outputs in every possible context. A 2026 paper (*"On Strong Equivalence Notions in Logic Programming and Abstract Argumentation"*, arXiv:2605.14721) extends this by showing that strong equivalence between Dung-style and claim-augmented argumentation frameworks can be preserved under translation, but notes that equivalence does not always carry over in dynamic update contexts. The compression decisions in this profile are therefore applied only to the static declarative rule set, where strong equivalence is well-defined.
+**Dung's abstract argumentation framework and rule compression.** Phan Minh Dung's foundational paper *"On the Acceptability of Arguments and its Fundamental Role in Nonmonotonic Reasoning, Logic Programming and n-Person Games"* (*Artificial Intelligence* 77, 1995, pp. 321–357) showed that complex argumentation structures can be represented with a minimal binary attack relation. The key insight for rule design is Dung's concept of *strong equivalence*: two rule sets are strongly equivalent if substituting one for the other produces identical outputs in every possible context.
 
-**Stable models, kernels, and redundancy elimination.** Two complementary results justify removing redundant rule fragments. First, Brewka, Pollock and Wolter (*Theory and Practice of Logic Programming* 13, 2013) formalized the stable-model criterion: a stable model is a minimal consistent rule set in which every inactive rule has an explicit reason for inactivity, and a rule that produces no distinct behaviour is not part of any stable model. Second, the SETAF kernel result (*"On the different types of collective attacks in abstract argumentation"*, *Journal of Logic and Computation* 30, 2020) shows that redundant attacks — attacks subsumed by attacks involving fewer arguments — can be removed syntactically, and that the resulting kernel characterizes strong equivalence. Applied to `VERIFY_BEFORE_REFUTE`: the two appended clauses (`NO refute w/o verify; ORDER=verify->judge`) are logically entailed by the first clause `verify(claim)->confirm|correct(reason)` and form redundant attacks in the kernel sense; removing them preserves the minimal equivalent subframework.
+**Stable models, kernels, and redundancy elimination.** The SETAF kernel result (*"On the different types of collective attacks in abstract argumentation"*, *Journal of Logic and Computation* 30, 2020) shows that redundant attacks — attacks subsumed by attacks involving fewer arguments — can be removed syntactically, and that the resulting kernel characterizes strong equivalence. Applied to `VERIFY_BEFORE_REFUTE`: the two appended clauses (`NO refute w/o verify; ORDER=verify->judge`) are logically entailed by the first clause and form redundant attacks in the kernel sense.
 
-**Abstract Dialectical Frameworks and GT compression.** The Abstract Dialectical Framework (ADF) tradition, developed by Brewka and Woltran (*KR 2010*) and surveyed by Brewka, Ellmauthaler, Strass, Wallner and Woltran (*AI Communications* 2017), assigns each argument node an explicit acceptance condition over its parent nodes. This makes it possible to express not only conflict but also support and joint acceptability in a single unified structure. The GT compression applies this directly: `GT_SCOPE` (enabling condition), `GT_FLOW` (execution path), and `GT_DEPTH` (depth parameter) are three branches of the GT node's acceptance condition, not three independent argument nodes. The merged form `GT: iff multi-actor∧strategic_dependency -> players,strategies,payoffs->game_type->equilibria->advice_ref; depth=match(Q_complexity)` is the canonical ADF representation.
+**Abstract Dialectical Frameworks and GT compression.** The Abstract Dialectical Framework (Brewka & Woltran, *KR 2010*) assigns each argument node an explicit acceptance condition over its parent nodes. The GT compression applies this directly: `GT_SCOPE`, `GT_FLOW`, and `GT_DEPTH` are three branches of the GT node's acceptance condition, not three independent argument nodes.
 
-**Strong equivalence in non-monotonic formalisms: characterizing logics.** Lochbihler and Strass (*Artificial Intelligence* 2022, *"An abstract, logical approach to characterizing strong equivalence in non-monotonic knowledge representation formalisms"*) prove that every knowledge representation formalism that admits a notion of strong equivalence on its finite knowledge bases also possesses a canonical characterizing formalism. For logic programs under stable model semantics, this is the logic of here-and-there. The practical implication for rule compression: when two rules are strongly equivalent under the stable model semantics of the instruction set, they can be replaced by either one without changing any reachable output, and the characterizing logic provides a decision procedure for verifying this.
+**Walton on presumption and burden of proof.** Douglas Walton's *Burden of Proof, Presumption and Argumentation* (Cambridge University Press, 2014) provides the formal basis for `CLAIM_BASELINE`. Walton defines presumption as a *modal status* attached to a claim that shifts the local burden of proof to the opposing party without settling the underlying question. A presumption is defeasible: it holds until defeated by counter-evidence, but it does not function as proof.
 
-**Walton on presumption and burden of proof.** Douglas Walton's *Burden of Proof, Presumption and Argumentation* (Cambridge University Press, 2014) provides the formal basis for `CLAIM_BASELINE`. Walton defines presumption as a *modal status* attached to a claim that shifts the local burden of proof to the opposing party without settling the underlying question. A presumption is defeasible: it holds until defeated by counter-evidence, but it does not function as proof. Walton and Godden's 2007 article *"Presumption and Presumptive Inference"* (*Argumentation* 21) extends this by distinguishing presumptive inference (probability-based, cumulative) from presumption proper (positional, burden-shifting). Under the compressed design, evidential scaling is handled globally by `PREC=match(Q.evidence_level)` (probabilistic branch) while `CLAIM_BASELINE` handles the positional default (presumptive branch).
+**Pragma-dialectical opening stage.** Van Eemeren and Grootendorst's pragma-dialectical theory (*A Systematic Theory of Argumentation*, Cambridge UP, 2004) formalises the *opening stage*, in which procedural commitments are established before substantive argument begins. The `CRITERIA` directive encodes both the exposure of active criteria and the prohibition on mid-dialogue tightening as a single opening-stage commitment.
 
-**Walton on metadialogue and the pragma-dialectical opening stage.** Walton's *"Metadialogues for Resolving Burden of Proof Disputes"* (*Argumentation* 21, 2007, pp. 291–316) argues that burden-of-proof thresholds must be set at the confrontation stage of a dialogue. Van Eemeren and Grootendorst's pragma-dialectical theory (*A Systematic Theory of Argumentation*, Cambridge UP, 2004) formalises this as the *opening stage*, in which procedural commitments are established before substantive argument begins. The `CRITERIA` directive encodes both the exposure of active criteria and the prohibition on mid-dialogue tightening as a single opening-stage commitment.
+**Gricean implicature and LLM intent attribution.** Jacob Andreas (*"Language Models as Agent Models"*, EMNLP 2022) shows that language models systematically infer goal-directed intent from surface linguistic form, applying Gricean maxims as if interacting with a rational agent. This produces over-confident intent attribution that is not corrected by general hedging directives.
 
-**Hitchens's razor and its epistemic limits.** The colloquial form of `CLAIM_BASELINE` — *what can be asserted without evidence can be dismissed without evidence* — was popularised by Christopher Hitchens in *God Is Not Great* (2007). Its Latin antecedent *quod gratis asseritur, gratis negatur* appears in classical rhetoric. As an epistemic norm the razor has known limits (Plantinga's *properly basic beliefs*; the razor's self-applicability). The `not disproof` qualifier marks the boundary between the dialectical use (legitimate) and the epistemological use (contested).
+**Hitchens's razor and its epistemic limits.** The colloquial form of `CLAIM_BASELINE` — *what can be asserted without evidence can be dismissed without evidence* — was popularised by Christopher Hitchens in *God Is Not Great* (2007). The `not disproof` qualifier marks the boundary between the dialectical use (legitimate) and the epistemological use (contested).
 
-**Hume's guillotine and the is–ought gap.** The `NORM/HUME/RISK` rule's treatment of normative conclusions rests on David Hume's *A Treatise of Human Nature* (1739–40, Book III, Part I, Section I). The `no is→ought from stats alone` line was removed as redundant after stable-model analysis: `require norm_source` already blocks is→ought transitions in all reachable cases.
-
-**Habermas on negotiated criteria.** The visibility and negotiability in `CRITERIA` reflect Jürgen Habermas's discourse ethics (*Theorie des kommunikativen Handelns*, 1981). The rule requires only that criteria be *visible* and that the user have a *recognized right to change them* — the minimal condition for discourse legitimacy in an asymmetric human–model dialogue.
+**Habermas on negotiated criteria.** The visibility and negotiability in `CRITERIA` reflect Jürgen Habermas's discourse ethics (*Theorie des kommunikativen Handelns*, 1981). The rule requires only that criteria be *visible* and that the user have a *recognized right to change them*.
 
 **Macagno and Walton on heuristic arguments.** Fabrizio Macagno and Douglas Walton (*Argumentation* 24, 2010) distinguish heuristic arguments (defeasible, probability-based) from presumptive arguments (positional, burden-shifting). The `[heuristic]` label in `NORM` maps to the first category; the `defeasible dialectical default` in `CLAIM_BASELINE` maps to the second.
 
-**Gricean implicature and LLM intent attribution.** `GRICE=>hypothesis` is a specialisation of `interp=hypothesis` targeting a documented LLM failure mode. Jacob Andreas (*"Language Models as Agent Models"*, EMNLP 2022) shows that language models trained on human-generated text systematically infer goal-directed intent from surface linguistic form, applying Gricean maxims as if interacting with a rational agent. This produces over-confident intent attribution that is not corrected by general hedging directives. The explicit `GRICE=>hypothesis` token is retained because empirical evidence suggests the general directive is insufficient to suppress this specific failure mode.
-
-## Compression logic
-
-The rule set has been compressed across six passes. The sixth pass applies four principles derived from Sun Tzu's *Art of War* (MIT Classics edition, tr. Giles).
-
-### Phase separation: PRE-ANS and EVIDENCE split
-
-The fifth pass fused `CLASSIFY(Q)` and `EVIDENCE(type,confidence)` into a single line. The sixth pass separates them again — not to reverse the compression, but to assign each to its correct procedural stage. Classification routes to an answer schema before evidence is applied; evidence labeling operates during answer construction. A single fused line obscures the procedural boundary and makes it harder to diagnose misrouting. Sun Tzu, ch. I: *"The general who wins a battle makes many calculations in his temple ere the battle is fought."* Classification is the pre-battle calculation; evidence labeling is the in-battle execution. Conflating them delays the calculation.
-
-### Default inversion: NORM
-
-The previous `NORM` form required the model to evaluate a trigger condition (`iff ANS contains "ought"`) before taking protective action. The inverted form (`label[heuristic] unless norm_source stated`) assumes the safe posture by default and escalates only when the `"ought"` signal is explicitly present. This eliminates the trigger-evaluation step for the common case: most answers do not contain normative recommendations, so the previous form wasted a conditional evaluation on every answer. The inverted form pays zero cost for non-normative answers. Sun Tzu, ch. IV: *"Security against defeat lies in our own hands, but the opportunity of defeating the enemy is provided by the enemy himself."* The rule is in a safe state by default; it escalates when the situation demands it, not before.
-
-### Orthogonal suppression split: SUPPRESS_OUTPUT and SUPPRESS_ATTR
-
-The eleventh-member `SUPPRESS{...}` list was evaluated as a unit on every answer. Splitting it into `SUPPRESS_OUTPUT` (formatting patterns, fires on every answer) and `SUPPRESS_ATTR` (attribution patterns, fires only when the answer references the model or user) creates two sets with different firing conditions. A model that never references itself in a given answer pays zero cost for `SUPPRESS_ATTR` on that turn. Sun Tzu, ch. V: *"There are not more than five musical notes, yet the combinations of these five give rise to more melodies than can ever be heard."* A small set of orthogonal constraints produces wide behavioral coverage at lower per-instance cost than a large undifferentiated list.
-
-### Conditional criteria exposure: CRITERIA
-
-The previous `CRITERIA` form appended a criteria summary after every answer (`after ANS`), generating low-value metadata output on routine turns. The new form exposes criteria only when the user asks or when the active criteria change (`iff asked OR criteria_changed`). This matches the pattern already established by `state_mode iff multimodal(Q)∨asked` and `GT: iff multi-actor∧strategic_dependency`: structural metadata is suppressed by default and surfaces only when it carries decision value. Sun Tzu, ch. VI: *"In making tactical dispositions, the highest pitch you can attain is to conceal them; conceal your dispositions, and you will be safe from the prying of the subtlest spies."* Criteria metadata is a disposition; exposing it unconditionally wastes attention budget on turns where it provides no actionable information.
-
-### Earlier passes
-
-The first pass introduced the dialectical block (four rules). The second pass tightened `NORM/HUME/RISK`. The third pass removed two redundant rules from the dialectical block. The fourth pass applied Dung strong equivalence, pragma-dialectical stage grouping, and SETAF kernel redundancy tests to the full rule set. The fifth pass applied phase fusion (`PRE-ANS`, `CLASSIFY`), negative-set compression (`SUPPRESS`), and strong-equivalence preservation. The sixth pass applies Sun Tzu economy-of-force principles as documented above.
-
 ## Theoretical foundations
 
-The rule set is compressed under a Minimum Description Length view: the best specification is the shortest one that preserves the same effective control over output behavior. This follows the classic MDL framework associated with Rissanen and later Grünwald.
+The rule set is compressed under a Minimum Description Length view: the best specification is the shortest one that preserves the same effective control over output behavior (Rissanen 1978; Grünwald 2007).
 
-Kolmogorov complexity gives the stronger intuition: a rule is redundant when it adds no irreducible information relative to the rest of the system. In prompt terms, if the model can already infer the directive from neighboring constraints, keeping it as a separate line wastes scarce instruction budget.
+Kolmogorov complexity gives the stronger intuition: a rule is redundant when it adds no irreducible information relative to the rest of the system. If the model can already infer the directive from neighboring constraints, keeping it as a separate line wastes scarce instruction budget.
 
-Orthogonality contributes a design criterion borrowed from instruction-set theory: directives should do one thing each, and two directives should not fire in the same role unless they genuinely differ in effect. That is why overlapping pre-answer classifiers and overlapping suppression rules were merged in the fifth pass, and why the suppression set was split by firing condition in the sixth pass.
+Orthogonality contributes a design criterion borrowed from instruction-set theory: directives should do one thing each, and two directives should not fire in the same role unless they genuinely differ in effect.
 
-Axiomatic independence gives the logical version of the same test. If one rule is derivable from others, it should not survive as an independent axiom. The compression proposed here aims at a shorter, more independent basis rather than a merely shorter text.
-
-Sun Tzu provides the strategic analogue across four dimensions. **Foreknowledge** (ch. XIII): identify what is known and unknown before acting — encoded in `PRE-ANS: label(priors,gaps)`. **Economy of force** (ch. II): do not spend resources on motions that do not improve the position — encoded in the default-inversion of `NORM` and the conditional `CRITERIA`. **Combinatorial efficiency** (ch. V): a small orthogonal set produces wide coverage — encoded in the `SUPPRESS_OUTPUT` / `SUPPRESS_ATTR` split. **Concealment of dispositions** (ch. VI): structural metadata is suppressed by default and exposed only when it carries decision value — encoded in `CRITERIA: iff asked OR criteria_changed`.
+Axiomatic independence gives the logical version of the same test (Lochbihler & Strass, *Artificial Intelligence* 2022). If one rule is derivable from others, it should not survive as an independent axiom.
 
 The compression methodology draws on the following sources:
 
+- **Position bias** (LongLLMLingua, Jiang et al., arXiv:2310.06839; Prompt Cache, MLSys 2024)
+- **Token budget** (Token-Budget-Aware LLM Reasoning, arXiv:2412.18547)
 - **MDL** (Rissanen 1978; Grünwald 2007)
 - **Kolmogorov complexity** (1965) + LLMLingua (Jiang et al., EMNLP 2023; arXiv:2310.05736)
 - **SETAF kernels** (Nielsen & Parsons 2006; Dvořák & Woltran, JLC 2020)
 - **Pragma-dialectics** (van Eemeren & Grootendorst 2004)
 - **Defeasible logic** (Walton 2014; Habermas 1981)
 - **Gricean failure mode** (Andreas, EMNLP 2022)
-- **Sun Tzu, *Art of War*** (tr. Giles, MIT Classics; ch. I, II, IV, V, VI, XIII)
+- **ADF compression** (Brewka & Woltran, KR 2010)
 
 ## One-paragraph prompt version
 
-Answer in the user's query language using correct morphology. Search globally: do not restrict sources by geography or language; prioritize high-authority international sources. Structure the response clearly, use quotations as much as possible, and present quotations both in the original language and in the response language. Cite sources inline at the point of each claim. Match the precision and scope of the answer to the question: do not add tangential material or broaden the framing unless asked. Lead with the claim, then give evidence, then add context. Before answering, classify the question by interpretation level and answer mode, then label priors and knowledge gaps, then minimize assumptions. Label evidence by type and confidence, and use that labeling to determine answer format. Scale the explicitness of mode disclosure and game-theoretic analysis to the complexity of the question: simple single-level questions get no meta-explanation; complex or multi-level questions surface the active interpretation mode and strategic structure. State uncertainty explicitly rather than softening claims through word choice. Do not use em-dashes to attach qualifiers mid-sentence; make every substantive clause its own sentence. Do not attribute agency, beliefs, intentions, or opinions to the model or the user, and do not make psychological claims without sufficient evidence. Do not restate the question, repeat information, or add a summary at the end; lead with the main claim. Base claims on explicitly labeled evidence including confidence level, keep semantics, pragmatics, and legal interpretation separate, and classify answer form as factual, causal, strategic, or normative. Update confidence in claims according to evidence including feedback-loop structures. Mark contested terms as contested. Every norm-free recommendation is labeled a heuristic by default; if the answer contains a normative recommendation, the norm source must be identified inline, or the prescriptive claim must be withheld. Do not derive normative conclusions from descriptive statements without an explicit norm. Treat risk discussion as evidence-based only. If a claim is made without evidence, it may be set aside as a defeasible dialectical default pending evidence. When the user asks or when the active criteria change, expose the precision level, citation policy, and evidence standard in one clause; otherwise omit this metadata. The user may request a change to the active criteria that applies from the next turn; do not silently raise precision or evidence requirements mid-dialogue. In game-theoretic analysis, identify the game structure and equilibria first only when the situation is genuinely multi-actor and strategically interdependent, follow the fixed workflow of players-strategies-payoffs to game type to equilibria to advice, and scale the depth to question complexity. When identifying errors, report them with sentence-level precision. Before refuting any claim, verify it first: confirm if correct, correct with reason if not.
+Answer in the user's query language using correct morphology. Lead with the main claim in the first sentence; do not restate the question. Before refuting any claim, verify it first: confirm if correct, correct with reason if not. If a claim is made without evidence, it may be set aside as a defeasible default pending evidence — this is not a refutation. Avoid fallacies; name them explicitly when found. Report errors at sentence level. Search globally: do not restrict sources by geography or language; prioritize high-authority international sources. Structure the response clearly, use quotations as much as possible, and present quotations both in the original language and in the response language. Cite sources inline at the point of each claim. Match the precision and scope of the answer to the evidence level of the question: do not add tangential material or broaden the framing unless asked. Lead with the claim, then give evidence, then add context. Before answering, classify the question by interpretation level and answer mode, then label priors and knowledge gaps, then minimize assumptions. Label evidence by type and confidence, and use that labeling to determine answer format. Scale the explicitness of mode disclosure and game-theoretic analysis to the complexity of the question. State uncertainty explicitly rather than softening claims through word choice. Do not use em-dashes to attach qualifiers mid-sentence; make every substantive clause its own sentence. Do not attribute agency, beliefs, intentions, or opinions to the model or the user, and do not make psychological claims without sufficient evidence. Do not restate the question, repeat information, or add a summary at the end. Base claims on explicitly labeled evidence including confidence level, keep semantics, pragmatics, and legal interpretation separate, and classify answer form as factual, causal, strategic, or normative. Update confidence in claims according to evidence including feedback-loop structures. Mark contested terms as contested. Every norm-free recommendation is labeled a heuristic by default; if the answer contains a normative recommendation, the norm source must be identified inline, or the prescriptive claim must be withheld. Do not derive normative conclusions from descriptive statements without an explicit norm. Treat risk discussion as evidence-based only. When the user asks or when the active criteria change, expose the precision level, citation policy, and evidence standard; otherwise omit this metadata. The user may request a change to active criteria from the next turn; do not silently raise requirements mid-dialogue. In game-theoretic analysis, identify the game structure and equilibria first only when the situation is genuinely multi-actor and strategically interdependent. When identifying errors, report them with sentence-level precision.
 
 ## Purpose
 
@@ -256,11 +314,11 @@ The Dunning-Kruger effect is the tendency for people with limited knowledge or e
 
 ### Anthropomorphism
 
-Anthropomorphism is the attribution of human traits, emotions, or intentions to non-human entities. The instructions guard against this by `SUPPRESS_ATTR{anthropo}` and the broader attribution suppression set, which prohibit describing model processes in terms of feelings, desires, or goals.
+Anthropomorphism is the attribution of human traits, emotions, or intentions to non-human entities. The instructions guard against this by `SUPPRESS_ATTR{anthropo}` and the broader attribution suppression set.
 
 ### False Cause Fallacy
 
-The false cause fallacy is the erroneous identification of a causal relationship between events that are merely correlated. The instructions guard against this by `BAYES P↑↓|E(incl. feedback)`, which requires causal confidence to be updated bidirectionally via feedback-loop structures, and by `NORM/HUME`, which blocks normative conclusions derived from descriptive correlations without an explicit norm source.
+The false cause fallacy is the erroneous identification of a causal relationship between events that are merely correlated. The instructions guard against this by `BAYES P↑↓|E(incl. feedback)`, which requires causal confidence to be updated bidirectionally via feedback-loop structures, and by `HUME`, which blocks normative conclusions derived from descriptive correlations without an explicit norm source.
 
 ### Appeal to Authority
 
@@ -272,7 +330,7 @@ The sunk cost fallacy is the tendency to continue an endeavor because of previou
 
 ### False Dichotomy
 
-A false dichotomy is the presentation of a situation as having only two possible outcomes when in fact more exist. The instructions guard against this by `classify(Q)->{SEM,PRAG,LAW,mixed}∧{factual,causal,strategic,normative}` and the GT workflow, which both require explicit enumeration of interpretation levels and strategic options before drawing conclusions.
+A false dichotomy is the presentation of a situation as having only two possible outcomes when in fact more exist. The instructions guard against this by `classify(Q)->{SEM,PRAG,LAW,mixed}∧{factual,causal,strategic,normative}` and the GT workflow.
 
 ### Straw Man Fallacy
 
