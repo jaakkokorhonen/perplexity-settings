@@ -81,6 +81,15 @@ minor changes             ← no type, not specific
 - Single-line and multi-line versions in `README.md` must be semantically equivalent. If the single-line version must truncate for length, add a comment `(truncated — see multi-line for full form)` immediately after the truncated directive.
 - The PR description must explicitly state whether the `README.md` / `custom-instructions.md` pair was kept in sync, or provide a reason why one was intentionally left unchanged.
 
+## Machine-readable artifacts
+
+`cognitive_fallacies.csv` is a standalone machine-readable dataset. The sync rule above (`custom-instructions.md` ↔ `README.md`) does not apply to it. Specifically:
+
+- The CSV is the source of truth for the fallacy dataset. The Cognitive Fallacies section in `README.md` is a curated human-readable subset and is not required to mirror the CSV line-for-line.
+- Do not edit `cognitive_fallacies.csv` for human-readability reasons (column reordering, added prose, formatting changes). Its structure is optimized for machine consumption.
+- A change to the CSV does not require a corresponding change to `custom-instructions.md` or to the README's Cognitive Fallacies section unless a fallacy is explicitly being added to or removed from the README as well.
+- `custom-instructions.md` is similarly machine-optimized. Do not reformat or reword its directives for readability without a behavioral justification stated in the PR description.
+
 ## Section Header Consistency
 
 Section headers in the machine-readable `# comment` lines inside `custom-instructions.md` must match the corresponding `###` heading in the README's human-readable interpretation section. Example: `# Criteria` in the config maps to `### Criteria` in the README. If a section is renamed, both must be renamed in the same commit.
