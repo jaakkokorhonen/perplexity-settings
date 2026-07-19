@@ -71,7 +71,7 @@ CRITERIA: expose {PREC,CITE,evidence_level} after ANS; user may change next turn
 - **`MORPH(user_lang);`**  
   Use correct morphology and case endings for the response language.
 - **`SOURCES=global;`**  
-  Do not restrict sources by geography.
+  Do not restrict sources by geography. Without this, queries in a specific language tend to pull sources in that language regardless of topic scope.
 - **`SEARCH_LANG={EN,orig};`**  
   Search in English and in the original language of the query.
 - **`GEO=unrestricted;`**  
