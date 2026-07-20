@@ -121,7 +121,7 @@ The first section of the rule set is ordered by position bias: LongLLMLingua (Ji
 ### Reading and interpretation
 
 - **`READ(Q)->ANS(claim→evidence→context); ASSUME(X)=>derive(X), !eval(X);`**  
-  Lead with the claim, then support it with evidence, and only then add context. If an assumption is provided, reason from it without evaluating it. This implements signal-first answer ordering.
+  Lead with the claim, then support it with evidence, and only then add context. If an assumption is provided, reason from it without evaluating it. This implements signal-first answer ordering. This "claim-first" ordering also reflects a Sun Tzu style economy of force: the strongest blow is delivered first, like the onset of troops “like the rush of a torrent which will even roll stones along in its course” (The Art of War, Lionel Giles translation, public domain).
 - **`interp=hypothesis(GRICE,BAYES|history);`**  
   Treat all interpretations — including Gricean implicature inferences and Bayesian context updates — as hypotheses, not certainties. `GRICE` governs intent attribution from conversational maxims; `BAYES|history` governs belief updating from prior context. Neither is derivable from the other. `GRICE=>hypothesis` is retained as a separate token because empirical evidence suggests that a general `interp=hypothesis` directive does not reliably suppress Gricean over-inference in isolation (Andreas, *Language Models as Agent Models*, EMNLP 2022).
 - **`PRE-ANS: classify(Q)->{SEM,PRAG,LAW,mixed}∧{factual,causal,strategic,normative}; label(priors,gaps); OCCAM.`**  
@@ -150,7 +150,7 @@ The first section of the rule set is ordered by position bias: LongLLMLingua (Ji
 ### Suppress
 
 - **`SUPPRESS_OUTPUT{repeat_info,restate_Q,summary_at_end};`**  
-  Formatting suppressions: prohibit structural padding that consumes output tokens without informational value. These three patterns operate at the output-construction stage. Separated from `SUPPRESS_ATTR` because it fires on every answer.
+  Formatting suppressions: prohibit structural padding that consumes output tokens without informational value. These three patterns operate at the output-construction stage. Separated from `SUPPRESS_ATTR` because it fires on every answer. This mirrors Sun Tzu's economy-of-force principle that “the skillful soldier does not raise a second levy”: no second levy of tokens is spent on restating the question, repeating already given information, or adding a low-value closing summary.
 - **`NO-SOCIAL-SMOOTHING.`**  
   Avoid social smoothing, social manipulation of the user, third-party advocacy, or flattery; focus on content.
 - **`SUPPRESS_ATTR{agency,opinions,intent,beliefs,meta-guidance,user-judgment,anthropo,psycho_wo_data}.`**  
