@@ -129,7 +129,7 @@ The most behaviorally critical directives are placed first: tokens at the beginn
 - **`interp=hypothesis(GRICE,BAYES|history);`**  
   Treat all interpretations — including Gricean implicature inferences and Bayesian context updates — as hypotheses, not certainties. `GRICE` governs intent attribution from conversational maxims; `BAYES|history` governs belief updating from prior context. Neither is derivable from the other. `GRICE=>hypothesis` is retained as a separate token because empirical evidence suggests that a general `interp=hypothesis` directive does not reliably suppress Gricean over-inference in isolation (Andreas, *Language Models as Agent Models*, EMNLP 2022).
 - **`PRE-ANS: classify(Q)->{SEM,PRAG,LAW,mixed}∧{factual,causal,strategic,normative}; label(priors,gaps); OCCAM.`**  
-  Pre-answer stage: first classify the question by interpretation level and answer mode, then mark priors and knowledge gaps, then minimize assumptions. Classification is separated from evidence labeling (`EVIDENCE(type,confidence)→FMT`) because the two operate at different logical depths: classification routes to an answer schema before evidence is applied; evidence labeling operates during answer construction.
+  Pre-answer stage: first classify the question by interpretation level and answer mode, then mark priors and knowledge gaps, then minimize assumptions. Classification is separated from evidence labeling (`EVIDENCE(type,confidence)→FMT`) because the two operate at different logical depths: classification routes to an answer schema before evidence is applied; evidence labeling operates during answer construction. This maps to the System 2 / slow-thinking mode in Kahneman's dual-process theory: deliberate classification before response generation, not post-hoc rationalization (Brady et al., *Nature Reviews Psychology*, 2025). Prompting studies confirm that an explicit classification step before answering reduces heuristic bias by up to 33% compared to zero-shot generation (Zhao et al., arXiv:2404.17218, EMNLP 2024).
 
 ### Evidence and reasoning
 
@@ -163,13 +163,13 @@ The most behaviorally critical directives are placed first: tokens at the beginn
 ### Criteria
 
 - **`CRITERIA: expose {PREC,CITE,evidence_level} iff asked OR criteria_changed; user may change next turn; no unilateral raise w/o reason; policy constraints marked external.`**  
-  Pragma-dialectical opening-stage directive (van Eemeren & Grootendorst, *A Systematic Theory of Argumentation*, Cambridge UP, 2004). The earlier form exposed criteria after every answer (`after ANS`), producing continuous low-value output. The new form exposes criteria only when the user asks or when the active criteria change.
+  Pragma-dialectical opening-stage directive (van Eemeren & Grootendorst, *A Systematic Theory of Argumentation*, Cambridge UP, 2004). The earlier form exposed criteria after every answer (`after ANS`), producing continuous low-value output. The new form exposes criteria only when the user asks or when the active criteria change. The pragma-dialectical opening stage specifies ten discussion rules for critical discussion. Of these, the Burden of Proof rule and the Freedom rule are most directly encoded in `CLAIM_BASELINE` and `SCOPE=Q`: neither party may impose obligations not established at opening, and neither may restrict the other's right to advance standpoints or expand scope unilaterally.
 
 ## Performance engineering: why rules are ordered this way
 
 The rule set applies three empirically motivated ordering and compression principles.
 
-**Position bias (LongLLMLingua, arXiv:2310.06839).** LLM performance depends on the density and position of key information in the input prompt. Tokens at the beginning and end of the context window receive systematically higher attention weight than tokens in the middle — a phenomenon documented as position bias in long-context transformer inference. The most behaviorally critical directives (`SIGNAL_FIRST`, `VERIFY_BEFORE_REFUTE`, `CLAIM_BASELINE`) are therefore placed in the first section. This is the primary structural change from earlier versions, where these directives appeared at the end of the file.
+**Position bias (LongLLMLingua, arXiv:2310.06839).** LLM performance depends on the density and position of key information in the input prompt. Tokens at the beginning and end of the context window receive systematically higher attention weight than tokens in the middle — a phenomenon documented as position bias in long-context transformer inference. The most behaviorally critical directives (`SIGNAL_FIRST`, `VERIFY_BEFORE_REFUTE`, `CLAIM_BASELINE`) are therefore placed in the first section. This is the primary structural change from earlier versions, where these directives appeared at the end of the file. Chess expertise research provides a complementary cognitive framing: de Groot (1965) and Chase & Simon (1973) showed that grandmasters retrieve entire position patterns as single chunks rather than reconstructing moves piece by piece. `SIGNAL_FIRST` applies the same logic to answer generation — the main claim is the master-level chunk that the rest of the answer fills in, not the endpoint of a sequential derivation. In both cases, high-value information is front-loaded, and the rest of the structure follows from it.
 
 **Orthogonal suppression split (SUPPRESS_OUTPUT / SUPPRESS_ATTR).** An undifferentiated suppression list is evaluated as a unit on every answer turn. Splitting into two sets with different firing conditions — output-construction patterns vs. attribution patterns — means that a model generating an answer that never references itself pays zero evaluation cost for `SUPPRESS_ATTR` on that turn. The principle is borrowed from instruction-set orthogonality theory: two directives should not fire in the same role unless they genuinely differ in effect. LLMLingua (Jiang et al., EMNLP 2023, arXiv:2310.05736) provides the compression-side analogue: token-level iterative compression preserves behavioral equivalence under high compression ratios by maintaining semantic integrity at each step.
 
@@ -278,6 +278,8 @@ Orthogonality contributes a design criterion borrowed from instruction-set theor
 
 Axiomatic independence gives the logical version of the same test (Lochbihler & Strass, *Artificial Intelligence* 2022). If one rule is derivable from others, it should not survive as an independent axiom.
 
+**Toulmin's argument model and evidence structure.** Stephen Toulmin's *The Uses of Argument* (Cambridge UP, 1958) provides a structural complement to Walton's burden-of-proof account: where Walton governs *who* must argue, Toulmin governs *how* evidence supports a claim — data supports a claim via a warrant, qualified by a confidence level, with an explicit rebuttal slot for counter-evidence. `EVIDENCE(type,confidence)→FMT` encodes Toulmin's qualifier field directly: the format of an answer is determined by the confidence level of the underlying warrant, not by the topic alone. A claim backed by empirical consensus warrants a different format than a claim backed by contested model output.
+
 The compression methodology draws on the following sources:
 
 - **Position bias** (LongLLMLingua, Jiang et al., arXiv:2310.06839; Prompt Cache, MLSys 2024)
@@ -289,6 +291,9 @@ The compression methodology draws on the following sources:
 - **Defeasible logic** (Walton 2014; Habermas 1981)
 - **Gricean failure mode** (Andreas, EMNLP 2022)
 - **ADF compression** (Brewka & Woltran, KR 2010)
+- **Toulmin argument model** (Toulmin 1958)
+- **Chess expertise and chunking** (de Groot 1965; Chase & Simon 1973)
+- **Dual-process theory and LLM prompting** (Brady et al., *Nature Reviews Psychology* 2025; Zhao et al., arXiv:2404.17218)
 
 ## One-paragraph prompt version
 
@@ -369,6 +374,10 @@ The straw man fallacy is the misrepresentation of an argument as a weaker versio
 ### Texas Sharpshooter Fallacy
 
 The Texas sharpshooter fallacy involves picking out clusters from data after the fact to suit an argument. The instructions guard against this by `EVIDENCE(type,confidence)` and `BAYES P↑↓|E`, which require all evidence to be labeled and beliefs to be updated bidirectionally.
+
+### Algorithmic Aversion and Automation Bias
+
+Algorithmic aversion is the tendency to discount or distrust algorithmic recommendations even when they demonstrably outperform human judgment; automation bias is its mirror — uncritical over-reliance on algorithmic output without independent evaluation (Dietvorst et al., *Journal of Experimental Psychology: General* 144(1), 2015). Both failure modes are directly relevant to AI-assistant use. The instructions guard against automation bias through `VERIFY_BEFORE_REFUTE` and `CLAIM_BASELINE`, which require the model to earn credibility claim-by-claim rather than assume it by position. The instructions reduce the trigger for algorithmic aversion through `NO-SOCIAL-SMOOTHING`: suppressing flattery and sycophantic framing removes the uncanny persuasion effect that drives user distrust of AI outputs (Sharma et al., *arXiv:2310.13548*, 2023).
 
 ## License
 
