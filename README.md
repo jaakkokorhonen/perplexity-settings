@@ -2,7 +2,7 @@
 
 Perplexity [Custom instructions](https://www.perplexity.ai/help-center/en/articles/10352993-account-settings) to clean up argumentative rhetoric and hallucinations.
 
-This is a Perplexity Custom instructions template focused on and developed with Finnish output, explicit reasoning, evidence discipline, and careful interpretation. Concise, logical language ensures that directives are followed. Verbose, human-language guidelines are deprioritized as they bleed out of the model's attention budget. The configuration aims to give users actionable, factual data.
+This is a Perplexity Custom instructions template focused on and developed with Finnish output, explicit reasoning, evidence discipline, and careful interpretation. Concise, logical language ensures that directives are followed. Verbose, human-language guidelines are deprioritized because they bleed out of the model's attention budget. The configuration aims to give users actionable, factual data.
 
 Custom instructions has limited length. It should be regarded as a preference and context store, not as training data. Instructions have to compete for attention within a limited budget. The more concise they are, the more budget will be left for the actual content in the output. The main evaluation criterion for rules is attention-budget efficiency: each new directive should earn its place by delivering clear added marginal value in outputs.
 
@@ -90,9 +90,11 @@ CRITERIA: expose {PREC,CITE,evidence_level} iff asked OR criteria_changed; user 
 
 ## Human-readable interpretation
 
+This section is a human-readable view of the DSL: it explains what each directive does, why it is structured the way it is, and what theoretical basis supports it. It does not change model behavior; that is determined solely by `custom-instructions.md`.
+
 ### Signal and argumentation block (front-loaded)
 
-The first section of the rule set is ordered by position bias: LongLLMLingua (Jiang et al., arXiv:2310.06839) and empirical long-context studies show that tokens at the beginning and end of the prompt window receive higher attention weight than tokens in the middle. The most behaviorally critical directives are therefore placed first.
+The most behaviorally critical directives are placed first: tokens at the beginning of the prompt window receive higher attention weight than tokens in the middle. LongLLMLingua (Jiang et al., arXiv:2310.06839) and empirical long-context studies document this as position bias in long-context transformer inference.
 
 - **`SIGNAL_FIRST.`**  
   The first sentence of every answer must carry the main claim. No preamble, no restatement of the question, no hedging opener.
@@ -123,7 +125,7 @@ The first section of the rule set is ordered by position bias: LongLLMLingua (Ji
 ### Reading and interpretation
 
 - **`READ(Q)->ANS(claim→evidence→context); ASSUME(X)=>derive(X), !eval(X);`**  
-  Lead with the claim, then support it with evidence, and only then add context. If an assumption is provided, reason from it without evaluating it. This implements signal-first answer ordering. This "claim-first" ordering also reflects a Sun Tzu style economy of force: the strongest blow is delivered first, like the onset of troops “like the rush of a torrent which will even roll stones along in its course” (The Art of War, Lionel Giles translation, public domain).
+  Lead with the claim, then support it with evidence, and only then add context. If an assumption is provided, reason from it without evaluating it. This implements signal-first answer ordering. This "claim-first" ordering also reflects, metaphorically, a Sun Tzu economy-of-force principle: the strongest blow is delivered first, like the onset of troops "like the rush of a torrent which will even roll stones along in its course" (The Art of War, Lionel Giles translation, public domain). In token-budget terms, maximizing signal intensity at the start means no budget is spent on preamble before the main claim lands.
 - **`interp=hypothesis(GRICE,BAYES|history);`**  
   Treat all interpretations — including Gricean implicature inferences and Bayesian context updates — as hypotheses, not certainties. `GRICE` governs intent attribution from conversational maxims; `BAYES|history` governs belief updating from prior context. Neither is derivable from the other. `GRICE=>hypothesis` is retained as a separate token because empirical evidence suggests that a general `interp=hypothesis` directive does not reliably suppress Gricean over-inference in isolation (Andreas, *Language Models as Agent Models*, EMNLP 2022).
 - **`PRE-ANS: classify(Q)->{SEM,PRAG,LAW,mixed}∧{factual,causal,strategic,normative}; label(priors,gaps); OCCAM.`**  
@@ -152,7 +154,7 @@ The first section of the rule set is ordered by position bias: LongLLMLingua (Ji
 ### Suppress
 
 - **`SUPPRESS_OUTPUT{repeat_info,restate_Q,summary_at_end};`**  
-  Formatting suppressions: prohibit structural padding that consumes output tokens without informational value. These three patterns operate at the output-construction stage. Separated from `SUPPRESS_ATTR` because it fires on every answer. This mirrors Sun Tzu's economy-of-force principle that “the skillful soldier does not raise a second levy”: no second levy of tokens is spent on restating the question, repeating already given information, or adding a low-value closing summary.
+  Formatting suppressions: prohibit structural padding that consumes output tokens without informational value. These three patterns operate at the output-construction stage. Separated from `SUPPRESS_ATTR` because it fires on every answer. This mirrors, in token-budget terms, Sun Tzu's economy-of-force principle that "the skillful soldier does not raise a second levy": no second levy of tokens is spent on restating the question, repeating already given information, or adding a low-value closing summary.
 - **`NO-SOCIAL-SMOOTHING.`**  
   Avoid social smoothing, social manipulation of the user, third-party advocacy, or flattery; focus on content.
 - **`SUPPRESS_ATTR{agency,opinions,intent,beliefs,meta-guidance,user-judgment,anthropo,psycho_wo_data}.`**  
@@ -322,7 +324,7 @@ It instructs the model **not** to:
 
 ## Cognitive Fallacies
 
-Below is a list of cognitive fallacies that these instructions are especially designed to guard against.
+The following list is a traceable map: each fallacy names the specific directives that guard against it. This makes it possible to audit whether a rule change would leave a known failure mode unguarded.
 
 ### Confirmation Bias
 
