@@ -152,7 +152,7 @@ The first section of the rule set is ordered by position bias: LongLLMLingua (Ji
 - **`SUPPRESS_OUTPUT{repeat_info,restate_Q,summary_at_end};`**  
   Formatting suppressions: prohibit structural padding that consumes output tokens without informational value. These three patterns operate at the output-construction stage. Separated from `SUPPRESS_ATTR` because it fires on every answer.
 - **`NO-SOCIAL-SMOOTHING.`**  
-  Vältä sosiaalista voitelua, käyttäjän sosiaalista manipulointia, kolmansien osapuolien puolustelua tai mielistelyä; keskity sisältöön.
+  Avoid social smoothing, social manipulation of the user, third-party advocacy, or flattery; focus on content.
 - **`SUPPRESS_ATTR{agency,opinions,intent,beliefs,meta-guidance,user-judgment,anthropo,psycho_wo_data}.`**  
   Attribution suppressions: prohibit ascribing mental states, intentions, or judgments to the model or the user. Fires only when the answer references the model or the user — a model that never references itself pays zero evaluation cost for this set on that turn.
 
