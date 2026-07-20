@@ -37,6 +37,8 @@ See [CONVENTIONS.md](CONVENTIONS.md) for the synchronization rules between these
 
 To apply these, open Perplexity, click your profile icon, go to **Settings → Personalization → Custom instructions**, and paste the content.
 
+If your AI of choice doesn't have Custom instructions, you can use these rules in a Skill. I tried putting them into a Gemini Gem, and that worked, too.
+
 ### Single-line version
 
 Single-line version optimized for the Perplexity Custom instructions field:
